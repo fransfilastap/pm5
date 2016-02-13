@@ -1,0 +1,19 @@
+@import url("hover-min.css");
+
+table.dataTable,table.dataTable tr td{
+	font-size: 1em;
+}
+
+.route{
+	background-color: #11be2a;
+	color: #000;
+	border: 1px solid #000;
+	border-radius: 5px;
+	-moz-border-radius : 5px;
+	-webkit-border-radius : 5px;
+}
+
+.oos{
+	background-color: #fe0002;
+	color: #fff;
+}

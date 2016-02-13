@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <title>Geographic Online Alarm | PT. Huawei Services, Tbk</title>
+    <link th:href="@{css/application.commented.css}" rel="stylesheet"></link>
+    <link rel="stylesheet" type="text/css" th:href="@{css/styles.css}">
+    <div th:include="${'modules/'+module} :: css" th:remove="tag"></div>
+
+    <!-- as of IE9 cannot parse css files with more that 4K classes separating in two files -->
+    <!--[if IE 9]>
+        <link href="@{css/application-ie9-part2.css}" rel="stylesheet"></link>
+    <![endif]-->
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{img/favicon.png}" /></link>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"></meta>
+    <meta name="description" content=""></meta>
+    <meta name="author" content="fransfilastap@live.com"></meta>
+    <meta charset="utf-8"></meta>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"></meta>
+
+    <script>
+        /* yeah we need this empty stylesheet here. It's cool chrome  chromium fix
+         chrome fix https://code.google.com/p/chromium/issues/detail?id=167083
+         https://code.google.com/p/chromium/issues/detail?id=332189
+         */
+    </script>
+</head>
+<body>
+<!--
+  Main sidebar seen on the left. may be static or collapsing depending on selected state.
+
+    * Collapsing - navigation automatically collapse when mouse leaves it and expand when enters.
+    * Static - stays always open.
+-->
+<nav id="sidebar" class="sidebar" role="navigation">
+    <!-- need this .js class to initiate slimscroll -->
+    <div class="js-sidebar-content">
+        <header class="logo hidden-xs">
+            <a th:href="@{/}"><img th:src="@{images/huawei_logo_fit.png}"></img></a>
+        </header>
+        <!-- seems like lots of recent admin template have this feature of user info in the sidebar.
+             looks good, so adding it and enhancing with notifications -->
+        <div class="sidebar-status visible-xs">
+            <a th:href="@{#}" class="dropdown-toggle" data-toggle="dropdown">
+                <span class="thumb-sm avatar pull-right">
+                    <img class="img-circle" th:src="@{demo/img/people/a5.jpg}" alt="..."></img>
+                </span>
+                &nbsp;
+                <strong th:text="${username}"></strong>
+                <b class="caret"></b>
+            </a>
+            <!-- #notifications-dropdown-menu goes here when screen collapsed to xs or sm -->
+        </div>
+        <!-- main notification links are placed inside of .sidebar-nav -->
+        <h5 class="sidebar-nav-title">LAST RECEIVE DATA : <a class="action-link" href="#"></a></h5>
+        <!-- some styled links in sidebar. ready to use as links to email folders, projects, groups, etc -->
+        <ul class="sidebar-labels">
+            <li>
+                <a href="#">
+                    <i class="fa fa-circle text-warning mr-xs"></i>
+                    <span class="label-name" id="data_version_value"> </span>
+                </a>
+            </li>
+        </ul>  
+		<div th:include="layout/menu :: menu" th:remove="tag"></div>
+    </div>
+</nav>
+<!-- This is the white navigation bar seen on the top. A bit enhanced BS navbar. See .page-controls in _base.scss. -->
+<nav class="page-controls navbar navbar-default">
+    <div class="container-fluid">
+        <!-- .navbar-header contains links seen on xs & sm screens -->
+        <div class="navbar-header">
+            <ul class="nav navbar-nav">
+                <li>
+                    <!-- whether to automatically collapse sidebar on mouseleave. If activated acts more like usual admin templates -->
+                    <a class="hidden-sm hidden-xs" id="nav-state-toggle" href="#" title="Turn on/off sidebar collapsing" data-placement="bottom">
+                        <i class="fa fa-bars fa-lg"></i>
+                    </a>
+                    <!-- shown on xs & sm screen. collapses and expands navigation -->
+                    <a class="visible-sm visible-xs" id="nav-collapse-toggle" href="#" title="Show/hide sidebar" data-placement="bottom">
+                        <span class="rounded rounded-lg bg-gray text-white visible-xs"><i class="fa fa-bars fa-lg"></i></span>
+                        <i class="fa fa-bars fa-lg hidden-xs"></i>
+                    </a>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right visible-xs">
+                <li>
+                    <!-- toggles chat -->
+                    <a href="#" data-toggle="chat-sidebar">
+                        <span class="rounded rounded-lg bg-gray text-white"><i class="fa fa-globe fa-lg"></i></span>
+                    </a>
+                </li>
+            </ul>
+            <!-- xs & sm screen logo -->
+            <a class="navbar-brand visible-xs" href="index.html">
+                <i class="fa fa-circle text-gray mr-n-sm"></i>
+                <i class="fa fa-circle text-warning"></i>
+                &nbsp;
+                GeOL
+                &nbsp;
+                <i class="fa fa-circle text-warning mr-n-sm"></i>
+                <i class="fa fa-circle text-gray"></i>
+            </a>
+        </div>
+
+        <!-- this part is hidden for xs screens -->
+        <div class="collapse navbar-collapse">
+            <!-- search form! link it to your search server -->
+            <div class="navbar-form navbar-left" role="search">
+            	<div th:replace="${'modules/'+module} :: ${toolbar}"></div>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="notifications-dropdown-toggle">
+                        <span class="thumb-sm avatar pull-left">
+                            <img class="img-circle" th:src="@{demo/img/people/a5.jpg}" alt="..."></img>
+                        </span>
+                        &nbsp;
+                        <strong th:text="${username}"></strong>&nbsp;
+                        <b class="caret"></b></a>
+                    <!-- ready to use notifications dropdown.  inspired by smartadmin template.
+                         consists of three components:
+                         notifications, messages, progress. leave or add what's important for you.
+                         uses Sing's ajax-load plugin for async content loading. See #load-notifications-btn -->
+                    <ul class="dropdown-menu">
+                        <li><a th:href="@{/}"><i class="glyphicon glyphicon-user"></i> &nbsp; My Account</a></li>
+                        <li class="divider"></li>
+                        <li><a th:href="@{/login?logout}"><i class="fa fa-sign-out"></i> &nbsp; Log Out</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="content-wrap">
+    <!-- main page content. the place to put widgets in. usually consists of .row > .col-md-* > .widget.  -->
+    <span th:text="${module}"></span>
+    <main id="content" class="content" role="main" th:include="${'modules/'+module} :: ${fragment}">
+    </main>
+</div>
+<!-- The Loader. Is shown when pjax happens -->
+<div class="loader-wrap hiding hide">
+    <i class="fa fa-circle-o-notch fa-spin-fast"></i>
+</div>
+
+<!-- common libraries. required for every page-->
+<script th:src="@{vendor/jquery/dist/jquery.min.js}"></script>
+<script th:src="@{vendor/jquery/jquery.ui.js}"></script> 
+<script th:src="@{vendor/jquery-pjax/jquery.pjax.js}"></script>
+<script th:src="@{vendor/bootstrap-sass/vendor/assets/javascripts/bootstrap/transition.js}"></script>
+<script th:src="@{vendor/bootstrap-sass/vendor/assets/javascripts/bootstrap/collapse.js}"></script>
+<script th:src="@{vendor/bootstrap-sass/vendor/assets/javascripts/bootstrap/dropdown.js}"></script>
+<script th:src="@{vendor/bootstrap-sass/vendor/assets/javascripts/bootstrap/button.js}"></script>
+<script th:src="@{vendor/bootstrap-sass/vendor/assets/javascripts/bootstrap/tooltip.js}"></script>
+<script th:src="@{vendor/bootstrap-sass/vendor/assets/javascripts/bootstrap/alert.js}"></script>
+<script th:src="@{vendor/jQuery-slimScroll/jquery.slimscroll.min.js}"></script>
+<script th:src="@{vendor/widgster/widgster.js}"></script>
+<script th:src="@{vendor/pace.js/pace.min.js}"></script>
+<script th:src="@{vendor/jquery-touchswipe/jquery.touchSwipe.js}"></script>
+
+<!-- common app js -->
+<script th:src="@{js/settings.js}"></script> 
+<script th:src="@{js/app.js}"></script>
+<script th:src="@{vendor/bootstrap-sass/vendor/assets/javascripts/bootstrap/popover.js}"></script>
+<script th:src="@{vendor/bootstrap-sass/vendor/assets/javascripts/bootstrap/modal.js}"></script>
+
+<!-- page specific libs and script -->
+<div th:include="${'modules/'+module} :: js" th:remove="tag"></div>
+<div th:include="${'modules/'+module} :: script" th:remove="tag"></div>
+<script type="text/javascript">
+//stacked modal
+$(document)  
+  .on('show.bs.modal', '.modal', function(event) {
+    $(this).appendTo($('body'));
+  })
+  .on('shown.bs.modal', '.modal.in', function(event) {
+    setModalsAndBackdropsOrder();
+  })
+  .on('hidden.bs.modal', '.modal', function(event) {
+    setModalsAndBackdropsOrder();
+  });
+
+function setModalsAndBackdropsOrder() {  
+  var modalZIndex = 1040;
+  $('.modal.in').each(function(index) {
+    var $modal = $(this);
+    modalZIndex++;
+    $modal.css('zIndex', modalZIndex);
+    $modal.next('.modal-backdrop.in').addClass('hidden').css('zIndex', modalZIndex - 1);
+});
+  $('.modal.in:visible:last').focus().next('.modal-backdrop.in').removeClass('hidden');
+}
+
+var loadDataVersion = function(){
+    $.get('<?php echo site_url("netcool/getDataVersion") ?>',function(response){
+        $("#data_version_value").html(response.RECEIVED_TIME);
+    },"JSON");
+}
+
+loadDataVersion();
+setInterval( loadDataVersion , 150000 );
+
+</script>
+</body>
+</html>

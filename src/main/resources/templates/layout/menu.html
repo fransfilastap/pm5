@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1"></meta>
+<title>Menu List</title>
+</head>
+<body>
+	<div th:fragment="menu">
+		<ul class="sidebar-nav">
+            <li >
+                <a href="dashboard" data-no-pjax="data-no-pjax">
+                    <span class="icon">
+                        <i class="glyphicon glyphicon-stats"></i>
+                    </span>
+                    Dashboard                
+                </a>
+            </li>    
+        </ul>
+        
+        <h5 class="sidebar-nav-title">Tools</h5>
+        <ul class="sidebar-nav">
+            <li>
+                <a href="#geo_kpi_parent" class="collapsed" data-toggle="collapse" data-parent="#sidebar">
+                    <span class="icon">
+                        <i class="glyphicon glyphicon-map-marker"></i>
+                    </span>
+                    Map Check  <i class="toggle fa fa-angle-down"></i>
+                </a>
+                     <ul id="geo_kpi_parent" class="collapse">
+                             <li> <a th:href="@{/customer-complaint}" data-no-pjax="data-no-pjax">Customer Complain</a> </li>
+                             <li> <a th:href="@{/vip-site}">VIP Site</a> </li>
+                             <li> <a th:href="@{/jalur-lebaran}">Jalur Lebaran</a> </li>
+                             <li> <a th:href="@{/event-mapping}">Event</a> </li>
+                     </ul>
+           </li>
+           <li>
+                <a th:href="@{/masscheck}">
+                    <span class="icon">
+                        <i class="fa fa-search"></i>
+                    </span>
+                    Mass Check     </a>
+           </li>
+           <li>
+                <a href="#subscriber_trend" class="collapsed" data-toggle="collapse" data-parent="#sidebar">
+                    <span class="icon">
+                        <i class="fa fa-heart"></i>
+                    </span>
+                    Subscriber   <i class="toggle fa fa-angle-down"></i>
+                </a>
+                <ul id="subscriber_trend" class="collapse">
+                        <li > <a th:href="@{/subscriber.trend?type=region}" data-no-pjax="data-no-pjax">Regional View</a> </li>
+                        <li > <a href="@{/subscriber.trend?type=bsc}">BSC/RNC View</a> </li>
+                </ul>
+           </li>
+           <li>
+                <a th:href="@{/activealarm?netcool}">
+                    <span class="icon">
+                        <i class="fa fa-warning"></i>
+                    </span>
+                    Active Alarm </a>
+           </li>
+           <li>
+                <a href="#trans_path" class="collapsed" data-toggle="collapse" data-parent="#sidebar">
+                    <span class="icon">
+                        <i class="fa fa-share-alt"></i>
+                    </span>
+                    Path Finder                                        <i class="toggle fa fa-angle-down"></i>
+                                    </a>
+                <ul id="trans_path" class="collapse">
+                        <li > <a th:href="@{/path}">Dictionary</a> </li>
+                </ul>
+           </li>    
+        </ul>   
+        
+        <h5 class="sidebar-nav-title">Administration</h5>
+        <ul class="sidebar-nav">
+             <li>
+	              <a href="#master_data" class="collapsed" data-toggle="collapse" data-parent="#sidebar">
+	                  <span class="icon">
+	                      <i class="fa fa-database"></i>
+	                  </span>
+	                  Alert <i class="toggle fa fa-angle-down"></i>
+                  </a>
+              <ul id="master_data" class="collapse">
+                      <li > <a th:href="@{alert?name=dailynav}">Daily NAV</a> </li>
+                      <li > <a th:href="@{alert?name=dailynav}">Hourly NAV</a> </li>
+                      <li > <a th:href="@{alert?name=dailynav}">VIP Alert</a> </li>
+               </ul>
+             </li>
+             <li>
+                <a href="#app_parent" class="collapsed" data-toggle="collapse" data-parent="#sidebar">
+                    <span class="icon">
+                        <i class="fa fa-wrench"></i>
+                    </span>
+                    Access Control  <i class="toggle fa fa-angle-down"></i>
+                 </a>
+                  <ul id="app_parent" class="collapse">
+                          <li > <a th:href="@{sec?user}">Users</a> </li>
+                          <li > <a th:href="@{sec@role}">Role</a> </li>
+                  </ul>
+             </li>                 
+        </ul>     
+	</div>
+</body>
+</html>

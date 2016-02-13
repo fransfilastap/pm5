@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1"></meta>
+<title>Dashboard</title>
+</head>
+<body>
+	<div th:fragment="dashboard">
+        <h1 class="page-title">Dashboard <small><small>Hope you like it.</small></small></h1>
+        <div class="row">
+            <div class="col-md-6">
+                <section class="widget">
+                    <header>
+                        <h4><span class="fw-semi-bold">NE DOWN TREND // HOURLY</span></h4>
+                    </header>
+                    <div class="widget-body">
+                        <div class="container">
+                          <div class="row">
+                              <select id="agingHourly">
+                                  <option value="LTOA">FILTER BY AGING [ default : LTOA ]</option>
+                                  <option value="ONE_TO_FOUR_HOUR">0 - 4 HOUR</option>
+                                  <option value="FOUR_TO_24_HOUR">4 - 24 HOUR</option>
+                                  <option value="ONE_TO_THREE_DAY">1 - 3 DAYS</option>
+                                  <option value="LTOA">LTOA</option>
+                                  <option value="ALL">ALL</option>
+                              </select>
+                              <select id="timespan1">
+                                  <option value="_1WEEK">Choose timespan</option>
+                                  <option value="_1WEEK">THIS WEEK</option>
+                                  <option value="_2WEEK">LAST 2 WEEKS</option>
+                                  <option value="_3WEEK">LAST 3 WEEKS</option>
+                                  <option value="_4WEEK">LAST 4 WEEKS</option>
+                              </select>
+                          </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div id="container">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="col-md-6">
+                <section class="widget">
+                    <header>
+                        <h4><span class="fw-semi-bold">NE DOWN TREND // DAILY</span></h4>
+                    </header>
+                    <div class="widget-body">
+                        <div class="container">
+                          <div class="row">
+                                <select id="agingDaily">
+                                  <option value="LTOA">FILTER BY AGING [ default : LTOA ]</option>
+                                  <option value="ONE_TO_FOUR_HOUR">0 - 4 HOUR</option>
+                                  <option value="FOUR_TO_24_HOUR">4 - 24 HOUR</option>
+                                  <option value="ONE_TO_THREE_DAY">1 - 3 DAYS</option>
+                                  <option value="LTOA">LTOA</option>
+                                  <option value="ALL">ALL</option>
+                                </select>
+                                <select id="timespan2">
+                                  <option value="_1WEEK">Choose timespan</option>
+                                  <option value="_1WEEK">THIS WEEK</option>
+                                  <option value="_2WEEK">LAST 2 WEEKS</option>
+                                  <option value="_3WEEK">LAST 3 WEEKS</option>
+                                  <option value="_4WEEK">LAST 4 WEEKS</option>
+                                </select>
+                          </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div id="container2">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <div class="row">
+        	<div class="col-md-12">
+        		<section class="widget">
+        			<header>
+        				<h4><span class="fw-semi-bold">NETWORK AVAILABILITY // REGION // DAILY</span></h4>
+        			</header>
+        			<div class="widget-body">
+        				<div class="row">
+        					<div class="container">
+        						<select id="technologyxx">
+        							<option value="2G">2G</option>
+        							<option value="3G">3G</option>
+        						</select>
+        						<select id="timespanxx">
+        							<option value="THIS_MONTH">Choose timespan</option>
+        							<option value="THIS_MONTH">THIS MONTH</option>
+        							<option value="LAST_MONTH">LAST MONTH</option>
+        						</select>
+        						<a href="" class="btn btn-xs btn-primary" id="export_dailynav">GET EXCEL</a>
+        					</div>
+        				</div>
+        				<div class="row">
+                            <div class="col-lg-12">
+                                <div id="container_nav_daily">
+
+                                </div>
+                            </div>
+                        </div>
+        			</div>
+        		</section>
+        	</div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <section class="widget">
+                    <header>
+                        <h4><span class="fw-semi-bold">NETWORK AVAILABILITY // CLUSTER</span></h4>
+                    </header>
+                    <div class="widget-body">
+                        <div class="row">
+                            <div class="container">
+                                <select id="hourly_type">
+                                    <option value="2G">2G</option>
+                                    <option value="3G">3G</option>
+                                </select>
+                                <select id="cregion">
+                                	<div th:remove="tag" th:each="region : ${regions}">
+                                		<option th:value="${region}" th:text="${region}"></option>
+                                	</div>
+                                </select>
+                                <select id="availtimespan1">
+                                  <option value="TODAY">Choose timespan</option>
+                                  <option value="TODAY">TODAY</option>
+                                  <option value="LAST_2_DAY">LAST 2 DAYS</option>
+                                  <option value="LAST_3_DAY">LAST 3 DAYS</option>
+                                  <option value="_1WEEK">THIS WEEK</option>
+                                  <option value="_2WEEK">LAST 2 WEEKS</option>
+                                  <option value="_3WEEK">LAST 3 WEEKS</option>
+                                  <option value="_4WEEK">LAST 4 WEEKS</option>
+                                </select>
+                                <a href="" class="btn btn-xs btn-primary" id="cluster_avail_download">Export</a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div id="container_avail_hourly">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="col-md-6">
+                <section class="widget">
+                    <header>
+                        <h4><span class="fw-semi-bold">NETWORK AVAILABILITY // REGION</span></h4>
+                    </header>
+                    <div class="widget-body">
+                        <div class="row">
+                            <div class="container">
+                                <select id="daily_type">
+                                    <option value="2G">2G</option>
+                                    <option value="3G">3G</option>
+                                </select>
+                                <select id="availtimespan2">
+                                  <option value="TODAY">Choose timespan</option>
+                                  <option value="TODAY">TODAY</option>
+                                  <option value="LAST_2_DAY">LAST 2 DAYS</option>
+                                  <option value="LAST_3_DAY">LAST 3 DAYS</option>
+                                  <option value="_1WEEK">THIS WEEK</option>
+                                  <option value="_2WEEK">LAST 2 WEEKS</option>
+                                  <option value="_3WEEK">LAST 3 WEEKS</option>
+                                  <option value="_4WEEK">LAST 4 WEEKS</option>
+                                </select>
+                                <a href="" class="btn btn-xs btn-primary" id="region_avail_download">Export</a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div id="container_avail_daily">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <section class="widget widget-chart-stats-simple">
+                    <header>
+                        <h5 class="mb-0">
+                            <span class="fw-semi-bold">NE DOWN</span>
+                        </h5>
+                        <a href="exportnedown" class="btn btn-primary btn-xs">Download</a>
+                    </header>
+                    <div class="widget-body">
+                        <table class="table table-bordered table-lg mt-lg mb-0" id="nedown">
+                            <thead>
+                                <tr>
+                                    <th rowspan="2" style="text-align:center;vertical-align:middle;">REGION</th>
+                                    <th colspan="2" class="text-align-right">NE DOWN</th>
+                                    <th colspan="2" class="text-align-center">TOTAL NE</th>
+                                    <th colspan="2" class="text-align-center"> PERCENTAGE </th>
+                                </tr>
+                                <tr>
+                                    <th class="text-align-center">2G</th>
+                                    <th class="text-align-center">3G</th>
+                                    <th class="text-align-center">2G</th>
+                                    <th class="text-align-center">3G</th>
+                                    <th class="text-align-center">2G</th>
+                                    <th class="text-align-center">3G</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="7">
+                                        Nothing here.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+            <div class="col-md-6">
+                <section class="widget widget-chart-stats-simple">
+                    <header>
+                        <h5 class="mb-0">
+                            <span class="fw-semi-bold">NE DOWN AGING</span>
+                        </h5>
+                        <a href="http://10.23.32.109:8080/pm5-exporter/dashboard/nedown/export" class="btn btn-primary btn-xs">Download</a>
+                    </header>
+                    <div class="widget-body">
+                        <table class="table table-bordered table-lg mt-lg mb-0" id="aging">
+                            <thead>
+                            <tr>
+                                <th>REGION</th>
+                                <th class="text-align-center">0 h - 4 h </th>
+                                <th class="text-align-center">4 h - 24 h</th>
+                                <th class="text-align-center">1 d - 3 d</th>
+                                <th class="text-align-center">3 d - 7 d</th>
+                                <th class="text-align-center">> 7 d</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="7">
+                                        Nothing here.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <section class="widget widget-chart-stats-simple">
+                    <header>
+                        <h5 class="mb-0">
+                            <span class="fw-semi-bold">NE DOWN STATUS // HOURLY</span>
+                        </h5>
+                        <!--<a href="http://10.23.32.109:8080/pm5-exporter/dashboard/nedown/export" class="btn btn-primary btn-xs">Download</a> -->
+                    </header>
+                    <div class="widget-body">
+                        <table class="table table-bordered table-lg mt-lg mb-0" id="status_hourly">
+                            <thead>
+                            <tr>
+                                <th>REGION</th>
+                                <th>FROM - TO</th>
+                                <th class="text-align-center">NEW </th>
+                                <th class="text-align-center">OPEN</th>
+                                <th class="text-align-center">CLOSED</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="7">
+                                        Nothing here.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+            <div class="col-md-6">
+                <section class="widget widget-chart-stats-simple">
+                    <header>
+                        <h5 class="mb-0">
+                            <span class="fw-semi-bold">NE DOWN STATUS // DAILY</span>
+                        </h5>
+                        <!--<a href="http://10.23.32.109:8080/pm5-exporter/dashboard/nedown/export" class="btn btn-primary btn-xs">Download</a> -->
+                    </header>
+                    <div class="widget-body">
+                        <table class="table table-bordered table-lg mt-lg mb-0" id="status_daily">
+                            <thead>
+                            <tr>
+                                <th>REGION</th>
+                                <th>FROM - TO</th>
+                                <th class="text-align-center">NEW </th>
+                                <th class="text-align-center">OPEN</th>
+                                <th class="text-align-center">CLOSED</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="7">
+                                        Nothing here.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <div class="modal fade" data-backdrop="static" id="pengumuman" tabindex="2" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">NEWS</h4>
+              </div>
+              <div class="modal-body">
+                <p style="font-weight:bold;font-size : 2em;">Customer complaint map is fully using offline map now!</p>
+                <img th:src="${''}"></img>" width="95%">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" data-backdrop="static" id="nedown-modal" tabindex="2" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">DETAIL</h4>
+              </div>
+              <div class="modal-body">
+                <table class="table" id="nedown_table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>REGION</th>
+                            <th>SITE ID</th>
+                            <th>SITE NAME</th>
+                            <th>NODE</th>
+                            <th>ALARM</th>
+                            <th>TTNo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" data-backdrop="static" id="cluster_export_option" tabindex="2" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">EXPORT OPTION</h4>
+              </div>
+              <div class="modal-body">
+					<form class="form-horizontal form-label-left" role="form">
+						<fieldset>
+							<legend>What do you want to export ?</legend>
+							<div class="form-group">
+								<label class="col-sm-4 control-label">Network Type</label>
+								<div class="col-sm-8">
+									<select data-placeholder="Choose network type"
+											data-width="auto"
+											class="select2 form-control" id="network_type_select_export">
+										
+										<option value="">Choose network type</option>
+										<option value="2G">2G/GSM</option>
+										<option value="3G">3G/UMTS</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label">Region</label>
+								<div class="col-sm-8">
+									<select multiple="multiple" data-placeholder="Choose network type"
+											data-width="auto"
+											data-minimum-results-for-search="10"
+											class="select2 form-control" id="network_type_select_export">
+										
+										<option value="">Choose region</option>
+										<option value="">Region A</option>
+										<option value="">Region B</option>
+									</select>
+								</div>
+							</div>
+						</fieldset>
+					</form>
+              </div>
+              <div class="modal-footer">
+              	<button type="button" class="btn btn-primary">Take It</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+	</div>
+	<div th:fragment="js">
+		<script type="text/javascript" th:src="@{vendor/MetroJS/release/MetroJs.Full/MetroJs.js}"></script>
+		<script type="text/javascript" th:src="@{vendor/skycons/skycons.js}"></script>
+		<script type="text/javascript" th:src="@{js/widgets.js}"></script>
+		<script type="text/javascript" th:src="@{vendor/datatables/media/js/jquery.dataTables.js}"></script>
+		<script type="text/javascript" th:src="@{highchart/js/highcharts.js}"></script>
+		<script type="text/javascript" th:src="@{highchart/js/modules/exporting.js}"></script>
+		<script type="text/javascript" th:src="@{vendor/groupedcategory/grouped-categories.js}"></script>
+		<script type="text/javascript" th:src="@{vendor/daterangepicker/moment.min.js}"></script>
+		<script type="text/javascript" th:src="@{vendor/daterangepicker/daterangepicker.js}"></script>
+		<script type="text/javascript" th:src="@{jsmodule/app_date.js}"></script>
+	</div>
+	<div th:fragment="css">
+		<link rel="stylesheet" th:href="@{vendor/daterangepicker/daterangepicker-bs3.css}"></link>
+	</div>
+		<div th:fragment="script">
+		<script type="text/javascript" th:src="@{jsmodule/dashboard.js}"></script>
+	</div>
+</body>
+</html>
