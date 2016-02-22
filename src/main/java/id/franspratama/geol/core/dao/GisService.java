@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,7 +16,6 @@ import id.franspratama.geol.core.pojo.AlarmFilter;
 import id.franspratama.geol.core.pojo.Severity;
 import id.franspratama.geol.core.pojo.Site;
 import id.franspratama.geol.core.pojo.VipGroup;
-import id.franspratama.geol.core.pojo.VipSite;
 import id.franspratama.geol.core.pojo.WFMTicketAndWorkOrder;
 import id.franspratama.geol.web.api.ActiveAlarmDTO;
 import id.franspratama.geol.web.api.DTOConverter;
