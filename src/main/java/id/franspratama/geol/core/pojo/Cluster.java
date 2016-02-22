@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="clusters",catalog="geolv2")
+@Table(name="clusters_v2",catalog="geolv2")
 public class Cluster {
 	
 	@Id @GeneratedValue

@@ -2,6 +2,7 @@ package id.franspratama.geol.core.dao;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
@@ -11,50 +12,47 @@ import java.util.List;
 
 import id.franspratama.geol.core.pojo.ActiveAlarm;
 import id.franspratama.geol.core.pojo.AlarmFilter;
+import id.franspratama.geol.core.pojo.Severity;
 import id.franspratama.geol.core.pojo.Site;
+import id.franspratama.geol.web.api.DTOConverter;
 import id.franspratama.geol.web.api.GisDTO;
 
 
 @Component("alarmToSiteMatcherStrategyV1")
-public class AlarmToSiteMatcherStrategy implements IAlarmToSiteStartegy{
+public class AlarmToSiteMatchingStrategy implements IAlarmToSiteStartegy<Site>{
 
 	@Override
 	public Set<GisDTO> match(List<Site> sites, List<ActiveAlarm> alarms, List<AlarmFilter> filters) {
 		
-		Map<String, StringBuilder> alarmMap = new HashMap<>();
-		
-		alarms.stream().forEach( a ->{
-			if( alarmMap.get( a.getSiteId() ) == null ){
-				alarmMap.put( a.getSiteId() , new StringBuilder() );
-			}
-			alarmMap.get(a.getSiteId()).append( "#"+a.getSummary() );
-		});
-		
+		Map<String, List<ActiveAlarm>> alarmMap = new HashMap<>();
+	
+		alarmMap = alarms.stream().collect(Collectors.groupingBy( a -> a.getSiteId() ));
 		
 		Set<GisDTO> result = new HashSet<>();
 		
 		for(Site s : sites){
+   
+		   GisDTO gisDTO = DTOConverter.createGisDTO(s);
 			
-			GisDTO gisDTO = new GisDTO();
-				   gisDTO.setLatitude( s.getLatitue() );
-				   gisDTO.setLongitude( s.getLongitude() );
-				   gisDTO.setSiteId( s.getSiteId() );
-				   gisDTO.setSiteName( s.getSiteName() );
-		
 		   if( alarmMap.get(s.getSiteId()) == null ){
-				result.add(gisDTO);
+				result.add( gisDTO );
 				continue;
 		   }
 		   
 		   for( AlarmFilter f : filters ){
-				if( org.apache.commons.lang3.StringUtils.contains( alarmMap.get(s.getSiteId()), f.getFilter() ) ){
-					gisDTO.setSeverity(f.getSeverity());
-					break;
-				}
-			}
-   
-			
-			result.add(gisDTO);
+			   long alarmDown = alarmMap.get(s.getSiteId()).stream().filter(a->{
+				   return (org.apache.commons.lang3.StringUtils.contains( a.getSummary(), f.getFilter() ));
+			   }).count();;
+			   
+			  if( alarmDown > 0 ){
+				  gisDTO.setSeverity(Severity.DOWN);
+				  break;
+			  } 
+			  
+			  gisDTO.setSeverity(Severity.MINOR);
+		   }
+				   
+		   result.add(gisDTO);
 		}
 		
 		return result;

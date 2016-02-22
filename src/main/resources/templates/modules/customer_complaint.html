@@ -206,6 +206,7 @@
 		<script type="text/javascript" th:src="@{vendor/leaflet/leafletjs/leaflet.js}"></script>
 		<script type="text/javascript" th:src="@{vendor/leaflet/bouncingmarker/leaflet.smoothmarkerbouncing.js}"></script>
 		<script type="text/javascript" th:src="@{vendor/leaflet/oms/oms.min.js}"></script>
+
 	</div>
 	<div th:fragment="css">
 		<link th:href="@{vendor/switchery/dist/switchery.min.css}" rel="stylesheet"></link>
@@ -214,14 +215,13 @@
 	<div th:fragment="script">
 		<script type="text/javascript" th:src="@{jsmodule/customer_complain.js}"></script>
 	</div>
-	
 	<div th:fragment="toolbar_default">
 		<div style="margin-top:-6px">
                 		<a class="navbar-brand" href="#"><strong>GEOGRAPHIC ONLINE ALARM (GEOL)</strong></a>
          </div>
 	</div>
 	
-	<div th:fragment="toolbar_customer_complaint">
+	<div th:fragment="toolbar">
         <div class="form-group" style="margin-right: 10px;">
             <strong class="hidden-xs">CUSTOMER COMPLAIN</strong>
         </div>

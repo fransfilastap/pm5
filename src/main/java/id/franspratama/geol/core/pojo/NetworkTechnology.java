@@ -57,7 +57,7 @@ public class NetworkTechnology {
 
 	@Override
 	public String toString() {
-		return "NetworkTechnology [id=" + id + ", technology=" + technology + ", desc=" + desc + "]";
+		return technology;
 	}
 
 	@Override

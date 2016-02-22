@@ -1,5 +1,6 @@
 package id.franspratama.geol.web.api;
 
+import id.franspratama.geol.core.pojo.NetworkTechnology;
 import id.franspratama.geol.core.pojo.Severity;
 import id.franspratama.geol.core.pojo.SiteType;
 
@@ -7,8 +8,10 @@ public class GisDTO {
 	
 	private String siteName;
 	private String siteId;
+	private String towerProvider;
 	private Severity severity;
 	private SiteType type;
+	private NetworkTechnology technology;
 	private double latitude;
 	private double longitude;
 	
@@ -16,17 +19,40 @@ public class GisDTO {
 	public GisDTO() {
 		super();
 	}
-	
-	
-	public GisDTO(String siteName, String siteId, Severity severity, SiteType type, double latitude, double longitude) {
+
+
+	public GisDTO(String siteName, String siteId, String towerProvider, Severity severity, SiteType type, NetworkTechnology technology,
+			double latitude, double longitude) {
 		super();
 		this.siteName = siteName;
 		this.siteId = siteId;
 		this.severity = severity;
+		this.towerProvider=towerProvider;
 		this.type = type;
+		this.technology = technology;
 		this.latitude = latitude;
 		this.longitude = longitude;
 	}
+
+
+
+
+
+	public NetworkTechnology getTechnology() {
+		return technology;
+	}
+
+
+
+
+
+	public void setTechnology(NetworkTechnology technology) {
+		this.technology = technology;
+	}
+
+
+
+
 
 	public SiteType getType() {
 		return type;
@@ -67,6 +93,16 @@ public class GisDTO {
 	}
 	public void setLongitude(double longitude) {
 		this.longitude = longitude;
+	}
+
+
+	public String getTowerProvider() {
+		return towerProvider;
+	}
+
+
+	public void setTowerProvider(String towerProvider) {
+		this.towerProvider = towerProvider;
 	}
 	
 	

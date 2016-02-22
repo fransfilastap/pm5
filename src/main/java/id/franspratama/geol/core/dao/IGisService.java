@@ -4,14 +4,20 @@ import java.util.List;
 import java.util.Set;
 
 import id.franspratama.geol.core.pojo.Site;
+import id.franspratama.geol.core.pojo.VipGroup;
+import id.franspratama.geol.web.api.ActiveAlarmDTO;
 import id.franspratama.geol.web.api.GisDTO;
 import id.franspratama.geol.web.api.LocationDTO;
 
 public interface IGisService {
-	public double  DEFAULT_RADIUS = 0.5; // ib kilometer
+	public double  DEFAULT_RADIUS = 0.5; // in kilometer
 	public Set<GisDTO> getSiteStatus(double lat,double lng,double radius);
 	public Set<GisDTO> getSiteStatusNearPath(List<LocationDTO> dto);
 	public Set<GisDTO> getSiteStatus(Site site,double radius);
 	public Set<GisDTO> getSiteStatus(String site,double radius);
+	public Set<GisDTO> getSiteStatus(VipGroup group);
+	public Set<ActiveAlarmDTO> getSiteAlarms(String site);
+	public GisDTO getBriefInformationOfSite(String site);
+	public Site getFullInformationOfSite(String siteId);
 
 }

@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+
 @Entity
 @Table(name="activealarm", catalog="netcool")
 public class ActiveAlarm implements java.io.Serializable{
@@ -78,7 +79,7 @@ public class ActiveAlarm implements java.io.Serializable{
 		this.site = site;
 		this.zone = zone;
 		this.severity = severity;
-		TTNO = tTNO;
+		this.TTNO = tTNO;
 		this.firstOccurrence = firstOccurrence;
 		this.lastOccurrence = lastOccurrence;
 		this.firstReceived = firstReceived;

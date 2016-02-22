@@ -9,9 +9,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -34,19 +31,19 @@ public class Site implements Serializable{
 	@Column(name="SITENAME")
 	private String siteName;
 	
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="REGION_ID")
 	private Region region;
 	
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="CITY")
 	private City city;
 	
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="CLUSTER_ID")
 	private Cluster cluster;
 	
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="PRIORITY_ID")
 	private Priority priority;
 	
@@ -54,7 +51,7 @@ public class Site implements Serializable{
 	@JoinColumn(name="TECHNOLOGY_ID")
 	private NetworkTechnology technology;
 	
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="TOWER_ID")
 	private Tower tower;
 	
@@ -65,10 +62,10 @@ public class Site implements Serializable{
 	private String address;
 	
 	@Column(name="LATITUDE")
-	private double latitue;
+	private Double latitude;
 	
 	@Column(name="LONGITUDE")
-	private double longitude;
+	private Double longitude;
 	
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="SITE_TYPE")
@@ -99,7 +96,7 @@ public class Site implements Serializable{
 		this.technology = technology;
 		this.bscOrRnc = bscOrRnc;
 		this.address = address;
-		this.latitue = latitue;
+		this.latitude = latitue;
 		this.longitude = longitude;
 		this.type = type;
 		this.towerProvider = towerProvider;
@@ -190,15 +187,15 @@ public class Site implements Serializable{
 	}
 
 	public double getLatitue() {
-		return latitue;
+		return ( latitude == null ? 0 : latitude );
 	}
 
 	public void setLatitue(double latitue) {
-		this.latitue = latitue;
+		this.latitude = latitue;
 	}
 
 	public double getLongitude() {
-		return longitude;
+		return ( longitude == null ? 0 : longitude );
 	}
 
 	public void setLongitude(double longitude) {
@@ -249,7 +246,7 @@ public class Site implements Serializable{
 	public String toString() {
 		return "Site [id=" + id + ", siteId=" + siteId + ", siteName=" + siteName + ", region=" + region + ", city="
 				+ city + ", cluster=" + cluster + ", priority=" + priority + ", technology=" + technology
-				+ ", bscOrRnc=" + bscOrRnc + ", address=" + address + ", latitue=" + latitue + ", longitude="
+				+ ", bscOrRnc=" + bscOrRnc + ", address=" + address + ", latitue=" + latitude + ", longitude="
 				+ longitude + ", type=" + type + ", towerProvider=" + towerProvider + ", createdAt=" + createdAt
 				+ ", updatedAt=" + updatedAt + ", deletedAt=" + deletedAt + "]";
 	}
@@ -266,7 +263,7 @@ public class Site implements Serializable{
 		result = prime * result + ((deletedAt == null) ? 0 : deletedAt.hashCode());
 		result = prime * result + (int) (id ^ (id >>> 32));
 		long temp;
-		temp = Double.doubleToLongBits(latitue);
+		temp = Double.doubleToLongBits(latitude);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		temp = Double.doubleToLongBits(longitude);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
@@ -322,7 +319,7 @@ public class Site implements Serializable{
 			return false;
 		if (id != other.id)
 			return false;
-		if (Double.doubleToLongBits(latitue) != Double.doubleToLongBits(other.latitue))
+		if (Double.doubleToLongBits(latitude) != Double.doubleToLongBits(other.latitude))
 			return false;
 		if (Double.doubleToLongBits(longitude) != Double.doubleToLongBits(other.longitude))
 			return false;

@@ -106,6 +106,7 @@ var Map = function( id , lat , lng  ){
 	this.center = this.latLng;
 	this.init( this.latLng );
 	this.backend = 'statWithinRadius';
+	this.mode = "radius"; // mode : 'radius' or 'path'
 }
 
 Map.prototype.init = function(latLng){
@@ -142,19 +143,16 @@ Map.prototype.init = function(latLng){
    	 	this.addPathDrawer();
    	 	//this.__initGoogleGeocoding(document.getElementById('location_search'));
 
-
+   	var self = this;
  	//additional
  	$(document).on('click','.site_detail',function( event ){
         event.preventDefault();
         var mkId = $(this).data('id');
         $.ajax({
-				url: "mapdetail",
-				method : "POST",
-                data : {
-			        	"site_id" : mkId
-			        },
+				url: "getSiteAlarm2?site="+mkId,
+				method : "GET",
                 success : function( response ){
-                    $("#alarm_detailx").html( response );
+                    $("#alarm_detailx").html( self.renderPopupAlarm(response.site, response.alarm) );
                     $("#site_alarm_detail").modal("show");
                 }
 		    })
@@ -366,8 +364,9 @@ Map.prototype.__searchSiteNearPath = function(){
 
 	this.xhr = $.ajax({			
 		type: "POST",
+		contentType : "application/json",
 		url: "statNearPath",
-		data:  { points : postPoints },
+		data:  JSON.stringify({ points : postPoints }),
 		dataType : "JSON",
 		beforeSend: function()
 		{
@@ -376,10 +375,8 @@ Map.prototype.__searchSiteNearPath = function(){
 		success: function(msg)
 		{
 			self.hideLoading();
-			var nearby = msg.nearby;
-			var tables = msg.tables;
+			var nearby = msg;
 			self.markSiteWithinRadius( nearby );
-			self.drawTable( tables );
 			$("#site_found_count").html( nearby.length );
 		}
 	});
@@ -406,6 +403,72 @@ Map.prototype.addAvailabilityListener = function(){
 	});
 }
 
+//development
+Map.prototype.renderPopup = function(site){
+	var component = "<div class='alarm'>"+
+	"<div>Site name : <b class='sitename'>"+site.siteName+"</b></div>"+
+	"<div>Site ID : <b class='siteid'>"+site.siteId+"</b></div>"+
+	"<div>Tower Provider : <b class='towerprovider'>"+site.towerProvider+"</b></div>"+
+    "<div>Node : <b class='node'>"+site.node+"</b></div>"+
+	"<div>Zone : <b class='zone'>"+site.zone+"</b></div>"+
+    "<div class='form-action'>"+
+        "<a class='btn btn-success btn-sm siteavail' data-id='' href='#'><i class='fa fa-signal'>  </i> Availability</a> "+
+	    "<!-- "+
+        "<a class='btn btn-danger btn-sm resetsite' href='' data-id=''><i class='fa fa-wrench'></i> FTR </a>"+
+        "-->"+
+    "</div>";
+	
+	return component;
+}
+
+Map.prototype.renderPopupAlarm = function(site,alarm){
+	
+	var rows = "";
+		
+	$.each(alarm,function(i,e){
+		rows +="<tr>"+
+			"<td style='width:100px;'>"+e.firstOccurrence+"</td>"+
+			"<td style='width:130px;'>"+e.summary+"</td>"+
+			"<td style='width:50px;'>"+e.severity+"</td>"+
+	        "<td style='width:75px'>"+e.ttno+"</td>"+
+	        "<td style='width:75px'>"+e.woId+"</td>"+
+	        "<td style='width:75px'>"+e.pic+"</td>"+
+	        "<td style='width:75px'>"+e.woStatus+"</td>"+
+		"</tr>";
+	});
+	
+	var component = "<div class='alarm'>"+
+		"<div>Site name : <b class='sitename'>"+site.siteName+"</b></div>"+
+		"<div>Site ID : <b class='siteid'>"+site.siteId+"</b></div>"+
+		"<div>Tower Provider : <b class='towerprovider'>"+site.towerProvider+"</b></div>"+
+	    "<div>Node : <b class='node'>"+site.node+"</b></div>"+
+		"<div>Zone : <b class='zone'>"+site.zone+"</b></div>"+
+	    "<div class='form-action'>"+
+	        "<a class='btn btn-success btn-sm siteavail' data-id='' href='#'><i class='fa fa-signal'>  </i> Availability</a> "+
+		    "<!-- "+
+	        "<a class='btn btn-danger btn-sm resetsite' href='' data-id=''><i class='fa fa-wrench'></i> FTR </a>"+
+	        "-->"+
+	    "</div>"+
+	    "<div><b>Alarm : </b></div>"+
+		"<table class='table table-bordered'>"+
+	        "<thead>"+
+	          "<tr>"+
+	            "<th style='width:100px;'>First Occurrence</th>"+
+	            "<th style='width:130px;'>Alarm</th>"+
+	            "<th style='width:50px;'>Severity</th>"+
+	            "<th style='width:75px'>TTNo</th>"+
+	            "<th style='width:75px'>WO ID</th>"+
+	            "<th style='width:75px'>PIC</th>"+
+	            "<th style='width:75px'>WO Status</th>"+
+	          "</tr>"+
+	        "</thead>"+
+	        "<tbody>"+rows+"</tbody>"+
+	      "</table>"+
+	"</div>";
+	
+	return component;
+}
+
 Map.prototype.addOMS = function(){
 
  	this.oms = new OverlappingMarkerSpiderfier(this.map,{markersWontMove: true, markersWontHide: true,keepSpiderfied:true});
@@ -428,14 +491,13 @@ Map.prototype.addOMS = function(){
 
 	  	if( marker.isShouldAjax ){
 	  		$.ajax({
-		        url : "mapdetail",
-		        dataType : 'text',
-		        method : 'POST',
-		        data : { 'site_id' : marker.siteid },
-		        success : function( alarm_detail ){
+		        url : "getSiteAlarm2?site="+marker.siteid,
+		        dataType : 'JSON',
+		        method : 'GET',
+		        success : function( detail ){
 		        	me.map.closePopup(popup);
 		        	var popup2 = L.popup(popupOptions);
-		        	popup2.setContent( alarm_detail );
+		        	popup2.setContent( me.renderPopupAlarm(detail.site, detail.alarm) );
 		        	popup2.setLatLng( marker.getLatLng() );
 		        	me.map.openPopup(popup2);
 		        },
@@ -446,14 +508,13 @@ Map.prototype.addOMS = function(){
 
 	  	}else{
 	  		$.ajax({
-		        url : "sitedetail",
-		        dataType : 'text',
-		        method : 'POST',
-		        data : { 'site_id' : marker.siteid },
-		        success : function( alarm_detail ){
+		        url : "getSiteInformation?site="+marker.siteid,
+		        dataType : 'JSON',
+		        method : 'GET',
+		        success : function( information ){
 		        	me.map.closePopup(popup);
 		        	var popup2 = L.popup(popupOptions);
-		        	popup2.setContent( alarm_detail );
+		        	popup2.setContent( me.renderPopup(information) );
 		        	popup2.setLatLng( marker.getLatLng() );
 		        	me.map.openPopup(popup2);
 		        },
@@ -492,7 +553,7 @@ Map.prototype.setLatLng = function(latLng) {
 Map.prototype.RadiusWidget = function(lat,lng,radius,placeName){
 
 	var self = this;
-
+	this.mode = "radius";
     this.lat = lat;
     this.lng = lng;
     this.radius = radius;
@@ -630,65 +691,65 @@ Map.prototype.markSiteWithinRadius = function( sites , clearPath ){
 
 			exportTarget += site.site_Id+"-";
 			var markerIcon;
-			var isDead = site.isDead;
-			if( isDead == -1 ){
+			var severity = site.severity;
+			if( severity == null || severity == undefined ){
 				self.normalSites.push(site);
 				self.normal++;
 
-				if( site.hubOrHut == "HUB" ){
+				if( site.type == "HUB" ){
 					markerIcon = "images/map/HUB_NORMAL.png";
-				}else if( site.hubOrHut == "HUT" ){
+				}else if( site.type == "HUT" ){
 					markerIcon = "images/map/HUT_NORMAL.png";
 				}
 				else{
 					
-					if( site.nettype == "2G" ){
+					if( site.technology.technology == "2G" ){
 						markerIcon = "images/map/2G_NORMAL.png";
 					}
-					else if(site.nettype == "3G"){
+					else if(site.technology.technology == "3G"){
 						markerIcon = "images/map/3G_NORMAL.png";
 					}else {
 						markerIcon = "images/map/4G_NORMAL.png";
 					}
 				}
 			}
-			else if( isDead == 0 ){
+			else if( severity == "MAJOR" || severity == "MINOR" || severity == "CRITICAL" ){
 					self.alarmSites.push(site);
 					self.alarm++;
-					if( site.hubOrHut == "HUB" ){
+					if( site.type == "HUB" ){
 						markerIcon = "images/map/HUB_ALARM.png'";
-					}else if( site.hubOrHut == "HUT" ){
+					}else if( site.type == "HUT" ){
 						markerIcon = "images/map/HUT_ALARM.png";
 					}
 					else{
 						
-						if( site.nettype == "2G" ){
+						if( site.technology.technology == "2G" ){
 							markerIcon = "images/map/2G_ALARM.png";
 						}
-						else if(site.nettype == "3G"){
+						else if(site.technology.technology == "3G"){
 							markerIcon = "images/map/3G_ALARM.png";
 						}else {
 							markerIcon = "images/map/4G_ALARM.png";
 						}
 					}
 			}
-			else if( isDead == 1 ){
+			else if( severity == "DOWN" ){
 				self.downSites.push(site);
 				self.alarmSites.push(site);
 				self.down++;
 				self.alarm++;
 
-				if( site.hubOrHut == "HUB" ){
+				if( site.type == "HUB" ){
 					markerIcon = "images/map/HUB_DOWN.png";
-				}else if( site.hubOrHut == "HUT" ){
+				}else if( site.type == "HUT" ){
 					markerIcon = "images/map/HUT_DOWN.png";
 				}
 				else{
 					
-					if( site.nettype == "2G" ){
+					if( site.technology.technology == "2G" ){
 						markerIcon = "images/map/2G_DOWN.png";
 					}
-					else if(site.nettype == "3G"){
+					else if(site.technology.technology == "3G"){
 						markerIcon = "images/map/3G_DOWN.png";
 					}else {
 						markerIcon = "images/map/4G_DOWN.png";
@@ -708,23 +769,22 @@ Map.prototype.markSiteWithinRadius = function( sites , clearPath ){
 				var marker = L.marker([ lat , lng ],{ icon : leafletIcon });
 				
 
-				if( site.isDead > -1 ) marker.isShouldAjax = true;
+				if( site.severity != null ) marker.isShouldAjax = true;
 				else marker.isShouldAjax = false;
 
-				marker.siteid = site.site_Id;
+				marker.siteid = site.siteId;
 				marker.siteInfo = null;
 
-				if( site.isDead == 1 ) self.downSiteMarkers.push( marker );
-				else if( site.isDead == 0 ) self.alarmSiteMarkers.push( marker );
+				if( site.severity == "DOWN" ) self.downSiteMarkers.push( marker );
+				else if( site.severity == "MAJOR" || site.severity == "MINOR" || site.severity == "CRITICAL" ) self.alarmSiteMarkers.push( marker );
 				else self.normalSiteMarkers.push( marker );
 
 
-
-				if( site.isDead == 1 ){
+				if( site.severity == "DOWN" ){
 
 					self.criticalFeatureGroup.addLayer(marker);
 				}
-				else if( site.isDead == 0 ){		
+				else if( site.severity == "MAJOR" || site.severity == "MINOR" || site.severity == "CRITICAL" ){		
 					self.minorMajorFeatureGroup.addLayer( marker );				
 				}
 				else{	
@@ -802,13 +862,13 @@ Map.prototype.generateResult = function(options){
 		success: function(msg)
 		{
 			self.hideLoading();
-			var nearby = msg.nearby;
-			var tables = msg.tables;
+			var nearby = msg;
+			//var tables = msg;
 			if( options ){
 				self.bounceSite = options.site_id;
 			}
 			self.markSiteWithinRadius( nearby, true );
-			self.drawTable( tables );
+			//self.drawTable( tables );
 			$("#site_found_count").html( nearby.length );
 		}
 	});
@@ -1125,11 +1185,11 @@ Map.prototype.drawSpecial = function(data, table_id){
 
 		var row = '<tr>'+
 					'<td>'+(index+1)+'</td>'+
-					'<td>'+value.site_Id+'</td>'+
-					'<td>'+value.site+'</td>'+
-					'<td>'+value.tprovider+'</td>'+
+					'<td>'+value.siteId+'</td>'+
+					'<td>'+value.siteName+'</td>'+
+					'<td>'+value.towerProvider+'</td>'+
 					'<td>'+value.ttno+'</td>'+
-                    '<td>'+( value.isDead == null ? 'NO' : '<a href="#" data-id="'+value.site_Id+'" class="site_detail">YES</a>' )+'</td>'+
+                    '<td>'+( value.severity == null ? 'NO' : '<a href="#" data-id="'+value.siteId+'" class="site_detail">YES</a>' )+'</td>'+
 				'</tr>';
 
 		$(table_id+" > tbody").append( row );
@@ -1139,14 +1199,23 @@ Map.prototype.drawSpecial = function(data, table_id){
 	$(table_id).dataTable();
 }
 
+window.addEventListener('load',function(){
 
-jQuery(function($){
-	
-	function pageLoad(){
-		var map = new Map( "#gmap", -6.2234585, 106.84260930000005 );
-		$("#content").append('<div class="loading"><img src="img/rolling.gif"/></div>');
-	}
+	  var script = document.createElement('script');
+	  script.type = 'text/javascript';
+	  script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyA-99rHYu2y4Y5g_kxBF3ZsQYL99tjTkCg&libraries=places&callback=initGmap';
+	  document.body.appendChild(script);
+});
+
+function initGmap(){
 	pageLoad();
+}
+function pageLoad(){
+	var map = new Map( "#gmap", -6.2234585, 106.84260930000005 );
+	$("#content").append('<div class="loading"><img src="img/rolling.gif"/></div>');
+}
+jQuery(function($){
+	//pageLoad();
     SingApp.onPageLoad(pageLoad);
 
 });
