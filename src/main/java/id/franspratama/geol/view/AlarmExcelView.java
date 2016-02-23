@@ -12,8 +12,7 @@ import org.springframework.web.servlet.view.document.AbstractXlsxView;;
 
 public class AlarmExcelView extends AbstractXlsxView{
 
-
-
+	
 	@Override
 	protected void buildExcelDocument(Map<String, Object> data, Workbook workbook, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
