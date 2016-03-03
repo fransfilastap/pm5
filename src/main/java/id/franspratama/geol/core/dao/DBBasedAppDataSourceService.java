@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import id.franspratama.geol.core.pojo.ExternalSource;
+import id.franspratama.geol.core.services.AppDataSourceService;
 
 @Service("dbBasedAppDataSourceService")
 public class DBBasedAppDataSourceService implements AppDataSourceService{

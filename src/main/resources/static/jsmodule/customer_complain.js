@@ -149,7 +149,7 @@ Map.prototype.init = function(latLng){
         event.preventDefault();
         var mkId = $(this).data('id');
         $.ajax({
-				url: "getSiteAlarm2?site="+mkId,
+				url: "sites-availability?site="+mkId,
 				method : "GET",
                 success : function( response ){
                     $("#alarm_detailx").html( self.renderPopupAlarm(response.site, response.alarm) );
@@ -391,10 +391,15 @@ Map.prototype.addAvailabilityListener = function(){
 
 		var _id = $(this).data('id');
 		var _pattern  = /G$/;
+		var _pattern4g = /E$/;
 		var _ty = "2g";
 					
 		if( _pattern.test( _id ) ){
 			_ty = "3g";
+		}
+		
+		if( _pattern.test( _id ) ){
+			_ty = "4G";
 		}
 
 		me.getSiteAvailability( _id, _ty );
@@ -412,9 +417,9 @@ Map.prototype.renderPopup = function(site){
     "<div>Node : <b class='node'>"+site.node+"</b></div>"+
 	"<div>Zone : <b class='zone'>"+site.zone+"</b></div>"+
     "<div class='form-action'>"+
-        "<a class='btn btn-success btn-sm siteavail' data-id='' href='#'><i class='fa fa-signal'>  </i> Availability</a> "+
+        "<a class='btn btn-success btn-sm siteavail' data-id='"+site.siteId+"' href='#'><i class='fa fa-signal'>  </i> Availability</a> "+
 	    "<!-- "+
-        "<a class='btn btn-danger btn-sm resetsite' href='' data-id=''><i class='fa fa-wrench'></i> FTR </a>"+
+        "<a class='btn btn-danger btn-sm resetsite' href='' data-id='"+site.siteId+"'><i class='fa fa-wrench'></i> FTR </a>"+
         "-->"+
     "</div>";
 	
@@ -827,9 +832,8 @@ Map.prototype.markSiteWithinRadius = function( sites , clearPath ){
 		this.drawSpecial( this.normalSites, '#table_normal_site' );
 	}
 		//map.setCenter( new google.maps.LatLng( last.latitude , last.longitude ) );
-		
-		var href = "http://10.23.32.109:8080/pm5-exporter/gis/export/"+exportTarget;
-		$("#exportResult").attr("href",href);
+	var href = "customer-complaint-export?lat="+this.lat+"&lon="+this.lng+"&rad="+(this.radius/1000);
+	$("#exportResult").attr("href",href);
 }
 
 
@@ -1061,10 +1065,10 @@ Map.prototype.unixTimeToHumanTime = function(unixtime){
 Map.prototype.getSiteAvailability = function( _site , _type ){
 	var me = this;
     var _data = {
-          'poc'  : _site,
-          'type' : _type,
+          'site'  : _site,
+          'version' : _type,
         };
-    var _url = "availability?site&detail";
+    var _url = "sites-availability";
 
     jQuery.ajax({
     	url : _url,

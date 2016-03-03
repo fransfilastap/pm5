@@ -1,4 +1,4 @@
-package id.franspratama.geol.core.dao;
+package id.franspratama.geol.core.services;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -8,6 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import id.franspratama.geol.core.dao.INEDownAgingRepository;
+import id.franspratama.geol.core.dao.INEDownRepository;
+import id.franspratama.geol.core.dao.INEDownStatusRepository;
+import id.franspratama.geol.core.dao.INEDownSummaryRepository;
+import id.franspratama.geol.core.dao.IWFMTicketAndWORepository;
 import id.franspratama.geol.core.pojo.AlarmDown;
 import id.franspratama.geol.core.pojo.NEDown;
 import id.franspratama.geol.core.pojo.NEDownAge;

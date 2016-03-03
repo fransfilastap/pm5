@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import id.franspratama.geol.core.dao.AvailabilityService;
 import id.franspratama.geol.core.dao.INEDownRepository;
-import id.franspratama.geol.core.dao.NEDownService;
 import id.franspratama.geol.core.pojo.ClusterAvailability;
 import id.franspratama.geol.core.pojo.DailyRegionAvailability;
 import id.franspratama.geol.core.pojo.NEDown;
@@ -26,6 +24,8 @@ import id.franspratama.geol.core.pojo.NeDownSummary;
 import id.franspratama.geol.core.pojo.RegionAvailability;
 import id.franspratama.geol.core.pojo.SpanType;
 import id.franspratama.geol.core.pojo.TimeSpan;
+import id.franspratama.geol.core.services.AvailabilityService;
+import id.franspratama.geol.core.services.NEDownService;
 
 
 @RestController

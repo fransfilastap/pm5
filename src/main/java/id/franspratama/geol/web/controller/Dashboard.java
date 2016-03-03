@@ -16,9 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-
-import id.franspratama.geol.core.dao.AvailabilityService;
-import id.franspratama.geol.core.dao.NEDownService;
 import id.franspratama.geol.core.dao.UtilityRepository;
 import id.franspratama.geol.core.pojo.AlarmDown;
 import id.franspratama.geol.core.pojo.ClusterAvailability;
@@ -27,6 +24,8 @@ import id.franspratama.geol.core.pojo.NetworkTechnology;
 import id.franspratama.geol.core.pojo.Region;
 import id.franspratama.geol.core.pojo.RegionAvailability;
 import id.franspratama.geol.core.pojo.TimeSpan;
+import id.franspratama.geol.core.services.AvailabilityService;
+import id.franspratama.geol.core.services.NEDownService;
 import id.franspratama.geol.view.ClusterAvailabilityExcelView;
 import id.franspratama.geol.view.DailyAvailabilityExcelView;
 import id.franspratama.geol.view.NEDownExcelView;

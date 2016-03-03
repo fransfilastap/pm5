@@ -62,7 +62,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/**/*.jpg")
 				.antMatchers("/**/*.png")
 				.antMatchers("/**/*.gif")
-				.antMatchers("/**/*.html");
+				.antMatchers("/**/*.html")
+				.antMatchers("/api/**");
 	}
 	
 	@Bean(name="passwordEncoder")

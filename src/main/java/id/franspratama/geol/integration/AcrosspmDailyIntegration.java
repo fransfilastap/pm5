@@ -15,9 +15,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import id.franspratama.geol.core.dao.AcrosspmAvailabilityRepository;
-import id.franspratama.geol.core.dao.AppDataSourceService;
 import id.franspratama.geol.core.io.Unzip;
 import id.franspratama.geol.core.pojo.DailyRegionAvailability;
+import id.franspratama.geol.core.services.AppDataSourceService;
 import id.franspratama.geol.task.Task;
 
 

@@ -1,4 +1,4 @@
-package id.franspratama.geol.core.dao;
+package id.franspratama.geol.core.services;
 
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import id.franspratama.geol.core.dao.AcrosspmAvailabilityRepository;
+import id.franspratama.geol.core.dao.ITimespanBasedAvailabilityRepository;
 import id.franspratama.geol.core.pojo.ClusterAvailability;
 import id.franspratama.geol.core.pojo.DailyRegionAvailability;
 import id.franspratama.geol.core.pojo.NetworkTechnology;

@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import id.franspratama.geol.core.dao.IGisService;
 import id.franspratama.geol.core.dao.IVipGroupRepository;
 import id.franspratama.geol.core.pojo.VipGroup;
+import id.franspratama.geol.core.services.IGisService;
 
 /**
  * This class is provide information of sites based on geographical information.
@@ -129,6 +129,11 @@ public class GisAPI {
 	}
 	
 	
-	
-	
+	@RequestMapping(value="/sites-availability",method=RequestMethod.GET,produces="application/json")
+	public Set<SiteAvailabilityDTO> getSiteAvailability2G( 
+			@RequestParam(name="site", required=true) String siteid,
+			@RequestParam(name="ver",required=false) String version){
+		return gisServices.getSiteAvailability(siteid, version);
+	}
+
 }

@@ -600,13 +600,11 @@ Map.prototype.markSiteWithinRadius = function( sites , clearPath ){
 	this.resetSummary();
 
 	var self = this;
-	var exportTarget = "";
 
 	if( sites.length > 0 ){
 		var last = "";
 		$.each(sites,function(index,site) {
-
-			exportTarget += site.site_Id+"-";
+			
 			var markerIcon;
 			var severity = site.severity;
 			if( severity == null || severity == undefined ){
@@ -730,11 +728,6 @@ Map.prototype.markSiteWithinRadius = function( sites , clearPath ){
 
 			}
 
-			//var href = "http://localhost:8084/pm5-exporter/gis/export/"+self.exportTarget;
-			//$("#exportResult").attr("href",href);
-			
-			
-
 		});
 
 		this.resetSummary();
@@ -745,7 +738,7 @@ Map.prototype.markSiteWithinRadius = function( sites , clearPath ){
 	}
 		//map.setCenter( new google.maps.LatLng( last.latitude , last.longitude ) );
 		
-		var href = "http://10.23.32.109:8080/pm5-exporter/gis/export/"+exportTarget;
+		var href = "vip-group-export?group="+$("select#route").val();
 		$("#exportResult").attr("href",href);
 }
 

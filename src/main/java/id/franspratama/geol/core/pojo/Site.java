@@ -74,6 +74,14 @@ public class Site implements Serializable{
 	@Column(name="TOWER_PROVIDER")
 	private String towerProvider;
 	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="manager_area_id")
+	private ManagerArea managerArea;
+	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="supervisor_area_id")
+	private SupervisorArea supervisorArea;
+	
 	@Column(name="CREATED_AT")
 	private Date createdAt;
 	
@@ -83,10 +91,14 @@ public class Site implements Serializable{
 	@Column(name="DELETED_AT")
 	private Date deletedAt;
 
-	public Site(String siteId, String siteName, Region region, City city, Cluster cluster, Priority priority,
-			NetworkTechnology technology, String bscOrRnc, String address, double latitue, double longitude,
-			SiteType type, String towerProvider) {
+
+
+	public Site(long id, String siteId, String siteName, Region region, City city, Cluster cluster, Priority priority,
+			NetworkTechnology technology, Tower tower, String bscOrRnc, String address, Double latitude,
+			Double longitude, SiteType type, String towerProvider, ManagerArea managerArea,
+			SupervisorArea supervisorArea, Date createdAt, Date updatedAt, Date deletedAt) {
 		super();
+		this.id = id;
 		this.siteId = siteId;
 		this.siteName = siteName;
 		this.region = region;
@@ -94,12 +106,18 @@ public class Site implements Serializable{
 		this.cluster = cluster;
 		this.priority = priority;
 		this.technology = technology;
+		this.tower = tower;
 		this.bscOrRnc = bscOrRnc;
 		this.address = address;
-		this.latitude = latitue;
+		this.latitude = latitude;
 		this.longitude = longitude;
 		this.type = type;
 		this.towerProvider = towerProvider;
+		this.managerArea = managerArea;
+		this.supervisorArea = supervisorArea;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+		this.deletedAt = deletedAt;
 	}
 
 	public Site() {
@@ -240,6 +258,44 @@ public class Site implements Serializable{
 
 	public void setDeletedAt(Date deletedAt) {
 		this.deletedAt = deletedAt;
+	}
+	
+	
+
+	public Tower getTower() {
+		return tower;
+	}
+
+	public void setTower(Tower tower) {
+		this.tower = tower;
+	}
+
+	public Double getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(Double latitude) {
+		this.latitude = latitude;
+	}
+
+	public ManagerArea getManagerArea() {
+		return managerArea;
+	}
+
+	public void setManagerArea(ManagerArea managerArea) {
+		this.managerArea = managerArea;
+	}
+
+	public SupervisorArea getSupervisorArea() {
+		return supervisorArea;
+	}
+
+	public void setSupervisorArea(SupervisorArea supervisorArea) {
+		this.supervisorArea = supervisorArea;
+	}
+
+	public void setLongitude(Double longitude) {
+		this.longitude = longitude;
 	}
 
 	@Override

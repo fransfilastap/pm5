@@ -25,7 +25,6 @@ import id.franspratama.geol.core.pojo.RegionAvailability;
 import id.franspratama.geol.core.dao.IEmailModulRepository;
 import id.franspratama.geol.core.dao.INEDownRepository;
 import id.franspratama.geol.core.dao.ITimespanBasedAvailabilityRepository;
-import id.franspratama.geol.core.dao.NEDownService;
 import id.franspratama.geol.core.mail.DailyRegionAvailabilityMessageComposingStrategy;
 import id.franspratama.geol.core.mail.DashboardMessageComposingStrategy;
 import id.franspratama.geol.core.mail.DefaultMessagingContext;
@@ -34,6 +33,7 @@ import id.franspratama.geol.core.pojo.AlarmDown;
 import id.franspratama.geol.core.pojo.ClusterAvailability;
 import id.franspratama.geol.core.pojo.DailyRegionAvailability;
 import id.franspratama.geol.core.pojo.TimeSpan;
+import id.franspratama.geol.core.services.NEDownService;
 import id.franspratama.geol.core.helper.DateHelper;;
 
 

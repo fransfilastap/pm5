@@ -1,4 +1,4 @@
-package id.franspratama.geol.core.dao;
+package id.franspratama.geol.core.services;
 
 import java.io.File;
 
