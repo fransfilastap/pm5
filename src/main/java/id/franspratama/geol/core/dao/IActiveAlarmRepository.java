@@ -42,6 +42,14 @@ public interface IActiveAlarmRepository extends JpaRepository<ActiveAlarm, Long>
 															@Param("longitude") double longitude,
 															@Param("radius") double radius);
 	
+	/**
+	 * 
+	 * 
+	 * 
+	 * 
+	 * @param id
+	 * @return
+	 */
 	@Query(name="vipgroupActiveAlarm",value="SELECT a.* FROM `netcool`.`activealarm` a "
 			+ "INNER JOIN ("
 			+ " SELECT sites.* FROM sites INNER JOIN vipsites_v2 v ON v.site_id = sites.id "
@@ -49,6 +57,41 @@ public interface IActiveAlarmRepository extends JpaRepository<ActiveAlarm, Long>
 			+ ") s ON s.siteid = a.siteid",nativeQuery=true)
 	public List<ActiveAlarm> findActiveAlarmByGroup(@Param("groupid") long id);
 	
+	
+	/**
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * @param route
+	 * @param type
+	 * @return
+	 */
+	
+	
+	@Query(name="lebaranGroupActiveAlarm",value="SELECT activealarm.* FROM netcool.activealarm "+
+				"INNER JOIN( "+
+				"	 SELECT s.SITEID FROM geolv2.sites s "+ 
+				"	 INNER JOIN ( "+
+				"		SELECT lrs.site_id "+
+				"		FROM lebaran_route_sites lrs "+
+				"		LEFT JOIN lebaran_routes lr ON lr.ID = lrs.route_id "+
+				"		WHERE lr.ID = :route "+
+				"	 ) ls on ls.site_id = s.ID "+
+				") sites ON sites.siteid = activealarm.siteid",nativeQuery=true)
+	public List<ActiveAlarm> getActiveAlarmByLebaranRoute(@Param("route") int route);
+	
+	
+	
+	/**
+	 * 
+	 * 
+	 * 
+	 * 
+	 * @param siteId
+	 * @return
+	 */
 	public List<ActiveAlarm> findAlarmBySiteId(String siteId);
 	
 	

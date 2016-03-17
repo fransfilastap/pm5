@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1"></meta>
+<title>Insert title here</title>
+</head>
+<body>
+	<div th:fragment="gis">
+		<div id="gmap" class="content-map">
+		</div>
+		    <div class="summary">
+		      <legend>Summary</legend>
+		      <table style="margin-top:-15px;">
+		        <tr>
+		          <td>Site Down</td>
+		          <td>:</td>
+		          <td>&nbsp;&nbsp;&nbsp;<a href="#" data-target="#down_site_modal" id="site_down_button"><span class="badge bg-danger" id="down_count">0</span></a></td>
+		          <td style="padding-left: 25px;"><input type="checkbox" id="down_only" checked="checked"></input></td>
+		        </tr>
+		        <tr>
+		          <td>Site W/ Alarm</td>
+		          <td>:</td>
+		          <td>&nbsp;&nbsp;&nbsp;<a href="#" data-target="#alarm_site_modal" id="site_alarm_button"><span class="badge bg-warning" id="alarm_count">0</span></a></td>
+		          <td style="padding-left: 25px;"><input type="checkbox" id="alarm_only" checked="checked"></input></td>
+		        </tr> 
+		        <tr>
+		          <td>Site Normal</td>
+		          <td>:</td>
+		          <td>&nbsp;&nbsp;&nbsp;<a href="#" data-target="#normal_site_modal" id="site_normal_button"><span class="badge bg-success" id="normal_count">0</span></a></td>
+		          <td style="padding-left: 25px;"><input type="checkbox" id="normal_only" checked="checked"></input></td>
+		        </tr>   
+		        <tr>
+		          <td>Total Site</td>
+		          <td>:</td>
+		          <td>&nbsp;&nbsp;&nbsp;<a href="#" data-target="#nearby_site_modal" id="site_found_button"><span class="badge bg-primary" id="site_found_count">0</span></a></td>
+		        </tr>                               
+		      </table>
+		      <a href="" class="btn btn-primary btn-xs" data-target="" id="exportResult">Export</a>
+		    </div>
+		    <img th:src="@{images/Huawei-Logo.png}" class="huawei_logo"></img>
+		    <div class="content-map-controls">
+		      <div class="btn-group btn-group-sm">
+		          <button class="btn btn-inverse" id="gmap-zoom-in"><i class="fa fa-plus"></i></button>
+		          <button class="btn btn-inverse" id="gmap-zoom-out"><i class="fa fa-minus"></i></button>
+		      </div>
+		    </div>
+		    <!-- <?php echo $geol_terminal; ?> -->
+		<div class="search_result">
+		    <strong>Search result.</strong>
+		    <ul>
+		    </ul>
+		</div> 
+		<div class="modal fade" data-backdrop="static" id="availabilitymodal" tabindex="3" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		        <h4 class="modal-title" id="myModalLabel">Site Availability Detail</h4>
+		      </div>
+		      <div class="modal-body">
+		        <div id="chartCanvas" class="modal-lg" style="margin:0;">
+		        </div>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		<div class="modal fade" data-backdrop="static" id="site_alarm_detail" tabindex="2" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		        <h4 class="modal-title" id="myModalLabel">Alarm Detail</h4>
+		      </div>
+		      <div class="modal-body">
+		        <div id="alarm_detailx" class="modal-lg" style="margin:0;padding-right:30px;">
+		        </div>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		<div class="modal fade" data-backdrop="static" id="nearby_site_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		        <h4 class="modal-title" id="myModalLabel">SITE LIST</h4>
+		      </div>
+		      <div class="modal-body">
+		        <div id="nearby_site_found" class="modal-lg" style="padding-right : 30px;">
+		        </div>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		<div class="modal fade" id="alarm_site_modal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		        <h4 class="modal-title" id="myModalLabel">SITE WITH ALARM</h4>
+		      </div>
+		      <div class="modal-body">
+		              <table class="table" id="table_alarm_site">
+		                <thead>
+		                  <tr>
+		                    <th>#</th>
+		                    <th>SiteID</th>
+		                    <th>Site Name</th>
+		                    <th>Tower Provider</th>
+		                    <th>TTNo.</th>
+		                    <th>Alarm</th>
+		                  </tr>
+		                </thead>
+		                <tbody> 
+		                </tbody>
+		              </table>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		<div class="modal fade" id="down_site_modal" tabindex="-1" data-backdrop="static" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		        <h4 class="modal-title" id="myModalLabel">DOWN SITE</h4>
+		      </div>
+		      <div class="modal-body">
+		              <table class="table" id="table_down_site">
+		                <thead>
+		                  <tr>
+		                    <th>#</th>
+		                    <th>SiteID</th>
+		                    <th>Site Name</th>
+		                    <th>Tower Provider</th>
+		                    <th>TTNo.</th>
+		                    <th>Alarm</th>
+		                  </tr>
+		                </thead>
+		                <tbody> 
+		                </tbody>
+		              </table>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		<div class="modal fade" data-backdrop="static" id="normal_site_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		        <h4 class="modal-title" id="myModalLabel">NORMAL SITE</h4>
+		      </div>
+		      <div class="modal-body">
+		              <table class="table" id="table_normal_site">
+		                <thead>
+		                  <tr>
+		                    <th>#</th>
+		                    <th>SiteID</th>
+		                    <th>Site Name</th>
+		                    <th>Tower Provider</th>
+		                    <th>TTNo.</th>
+		                    <th>Alarm</th>
+		                  </tr>
+		                </thead>
+		                <tbody> 
+		                </tbody>
+		              </table>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>	
+	</div>
+	<div th:fragment="js">
+		<script type="text/javascript" th:src="@{highchart/js/highcharts.js}"></script>
+		<script type="text/javascript" th:src="@{highchart/js/modules/exporting.js}"></script>
+		<script type="text/javascript" th:src="@{highchart/js/highslide-full.min.js}"></script>
+		<script type="text/javascript" th:src="@{highchart/js/highslide.config.js}"></script>
+		<script type="text/javascript" th:src="@{vendor/underscore/underscore-min.js}"></script>
+		<script type="text/javascript" th:src="@{vendor/backbone/backbone.js}"></script>
+		<script type="text/javascript" th:src="@{vendor/backbone.paginator/lib/backbone.paginator.min.js}"></script>
+		<script type="text/javascript" th:src="@{vendor/backgrid/lib/backgrid.js}"></script>
+		<script type="text/javascript" th:src="@{vendor/backgrid-paginator/backgrid-paginator.js}"></script>
+		<script type="text/javascript" th:src="@{vendor/datatables/media/js/jquery.dataTables.js}"></script>
+		<script type="text/javascript" th:src="@{vendor/bootstrap-select/bootstrap-select.min.js}"></script>
+		<script type="text/javascript" th:src="@{vendor/easyui/jquery.easyui.min.js}"></script>
+		<script type="text/javascript" th:src="@{vendor/switchery/dist/switchery.min.js}"></script>
+		<script type="text/javascript" th:src="@{vendor/leaflet/leafletjs/leaflet.js}"></script>
+		<script type="text/javascript" th:src="@{vendor/leaflet/bouncingmarker/leaflet.smoothmarkerbouncing.js}"></script>
+		<script type="text/javascript" th:src="@{vendor/leaflet/oms/oms.min.js}"></script>
+
+	</div>
+	<div th:fragment="css">
+		<link th:href="@{vendor/switchery/dist/switchery.min.css}" rel="stylesheet"></link>
+		<link th:href="@{vendor/leaflet/leafletjs/leaflet.css}" rel="stylesheet"></link>
+	</div>
+	<div th:fragment="script">
+		<script type="text/javascript" th:src="@{jsmodule/jalurlebaran.js}"></script>
+	</div>	
+	<div th:fragment="toolbar_default">
+		<div style="margin-top:-6px">
+                		<a class="navbar-brand" href="#"><strong>GEOGRAPHIC ONLINE ALARM (GEOL)</strong></a>
+         </div>
+	</div>
+
+	<div th:fragment="toolbar">
+		<div style="margin-top:6px">
+                <div class="form-group" style="margin-right: -10px;">
+                    <strong class="hidden-xs">JALUR LEBARAN</strong>
+                </div>
+                 <div class="form-group" style="margin-left:-5px;">
+                    <div class="col-sm-4">
+                        <select id="region_name" class="selectpicker">
+                            <option value="">SELECT REGION</option>  
+                            <option value="CENTRAL">CENTRAL</option>
+                            <option value="EAST">EAST</option>
+                            <option value="JABO">JABO</option> 
+                            <option value="NORTH">NORTH</option>                             
+                            <option value="WEST">WEST</option>                                                     
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-left:-5px;">
+                    <div class="col-sm-4">
+                        <select id="routetype" class="selectpicker">
+                            <option value="">SELECT ROUTE TYPE</option>      
+                            <div th:remove="tag" th:each="routeType : ${routeTypes}">
+                            	<option th:value="${routeType.id}" th:text="${routeType.type}"></option>
+                            </div>                          
+                        </select>
+                    </div>
+                </div>                
+                 <div class="form-group" style="margin-left:-5px;">
+                    <div class="col-sm-4">
+                        <select id="routename" class="selectpicker">
+                            <option value="">SELECT ROUTE</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-left:-5px;">
+                    <div class="col-sm-4">
+                        <select id="nettype" class="selectpicker">
+                            <option value="all">2G/3G/4G</option>    
+                            <option value="2g">2G</option>                        
+                            <option value="3g">3G</option>
+                            <option value="4g">4G</option>
+                        </select>
+                    </div>
+                </div>     
+		</div>
+	</div>
+</body>
+</html>

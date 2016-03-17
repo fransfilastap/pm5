@@ -59,6 +59,13 @@ public class DailyRegionAvailabilityMessageComposingStrategy implements MessageC
 	@Autowired
 	TemplateEngine templateEngine;
 	
+	/**
+	 * 
+	 * 
+	 * 
+	 */
+	private File parentFolder = new File( new File(".").getAbsolutePath() );
+	
 	@Override
 	public void composeMessage(Map<Object, Object> content, MessagingContext context) {
 		
@@ -139,15 +146,10 @@ public class DailyRegionAvailabilityMessageComposingStrategy implements MessageC
 			return ( nav.getTechnology().equalsIgnoreCase("3G") );
 		}).collect(Collectors.toList());		
 		
-		if( regionChartBuilder == null){
-			System.out.println("asu");
-		}
 		
 		JFreeChart regionChart2G = regionChartBuilder.createChart( regionAvailability2g ,"2G REGION AVAILABILITY MONTHLY");
 		JFreeChart regionChart3G = regionChartBuilder.createChart( regionAvailability3g , "3G REGION AVAILABILITY MONTHLY");
 		
-		//parent folder
-		File parentFolder = new File(new File(".").getAbsolutePath());
 		
 		//image file
 		File region2GChartImage = new File( parentFolder,"2G_NAV_REGION.png" );

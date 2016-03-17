@@ -24,6 +24,18 @@ import id.franspratama.geol.core.pojo.RegionAvailability;
 import id.franspratama.geol.core.services.AppDataSourceService;
 import id.franspratama.geol.task.Task;
 
+/**
+ * 
+ * TOLONG DIPERHATIKAN UNTUK PROGRAMMER SELANJUTNYA
+ * Kolom TCH adalah untuk teknologi 2G dan Cell untuk teknologi 3G
+ * 
+ * 
+ * 
+ * 
+ * 
+ * @author fransfilastap
+ *
+ */
 @Component("acrosspmAvailability")
 public class AcrosspmHourlyIntegration implements Task{
 

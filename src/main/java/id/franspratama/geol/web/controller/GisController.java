@@ -8,11 +8,15 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import id.franspratama.geol.core.dao.ILebaranRouteTypeRepository;
 import id.franspratama.geol.core.dao.IVipGroupRepository;
 import id.franspratama.geol.core.pojo.ActiveAlarmExport;
+import id.franspratama.geol.core.pojo.LebaranRoute;
+import id.franspratama.geol.core.pojo.LebaranRouteType;
 import id.franspratama.geol.core.pojo.VipGroup;
 import id.franspratama.geol.core.services.IGisService;
 import id.franspratama.geol.view.ActiveAlarmExcelView;
@@ -26,13 +30,21 @@ import id.franspratama.geol.view.ActiveAlarmExcelView;
  *
  */
 @Controller
-public class Gis extends BaseController{
+public class GisController extends BaseController{
 	
 	@Autowired
 	IGisService gisService;
 	
 	@Autowired
 	IVipGroupRepository vipGroupRepository;
+	
+	@Autowired
+	ILebaranRouteTypeRepository lebaranRouteTypeRepository;
+	
+	
+	public GisController(){
+		super();
+	}
 	
 	/**
 	 * Return view for customer complaint
@@ -80,6 +92,29 @@ public class Gis extends BaseController{
 	
 	/**
 	 * 
+	 * Render Jalur Lebaran Route
+	 * 
+	 * 
+	 * @return
+	 */
+	
+	@RequestMapping(value={"/jalur-lebaran"})
+	public ModelAndView jalurlebaran(){
+		
+		List<LebaranRouteType> routeTypes = lebaranRouteTypeRepository.findAll();
+		
+		Map<String,Object> model = new HashMap<>();
+		model.put("module", "lebaran");
+		model.put("fragment","gis");
+		model.put("resource","cc");
+		model.put("routeTypes", routeTypes);
+		
+		return render(model);
+	}
+	
+	
+	/**
+	 * 
 	 * Generate excel file based on selected VIP GROUP 
 	 * 
 	 * @param id
@@ -106,7 +141,7 @@ public class Gis extends BaseController{
 	 * @return
 	 */
 	
-	@RequestMapping(value={"/customer-complaint-export"})
+	@RequestMapping(value={"/customer-complaint-export"},method=RequestMethod.GET)
 	public ModelAndView customerComplaintExport( @RequestParam(name="lat",required=true) double lat, 
 			@RequestParam(name="lon",required=true) double lon, @RequestParam(name="rad") double rad){
 
@@ -117,6 +152,28 @@ public class Gis extends BaseController{
 		return new ModelAndView(new ActiveAlarmExcelView(), model);
 		
 	}
+	
+	
+	
+	/**
+	 * 
+	 * 
+	 * 
+	 * 
+	 * @param route
+	 * @return
+	 */
+	@RequestMapping(value={"/jalur-lebaran-export"}, method=RequestMethod.GET)
+	public ModelAndView jalurLebaranExport( @RequestParam(name="route",required=false) int route ){
+		Set<ActiveAlarmExport> exportData 	= gisService.getActiveAlarmExport(new LebaranRoute(route,null,null,null,null));
+		Map<String,Object> model 			= new HashMap<>();
+		model.put("data", exportData);
+		
+		return new ModelAndView(new ActiveAlarmExcelView(), model);
+	}
+	
+	
+
 	
 
 	

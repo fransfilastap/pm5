@@ -5,9 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.apache.commons.lang3.text.WordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -32,7 +31,7 @@ import id.franspratama.geol.view.NEDownExcelView;
 import id.franspratama.geol.view.RegionAvailabilityExcelView;
 
 @Controller
-public class Dashboard extends BaseController{
+public class DashboardController extends BaseController{
 	
 	@Autowired
 	UtilityRepository utilityRepository;
@@ -43,12 +42,13 @@ public class Dashboard extends BaseController{
 	@Autowired
 	NEDownService nedownService;
 	
-	public Dashboard() {
+	public DashboardController() {
 		super();
 	}
 
+	
 	@RequestMapping(value={"/","/dashboard"},method=RequestMethod.GET)
-	@Secured(value={"ROLE_ADMIN"})
+	@PreAuthorize("hasRole('DEV') OR hasRole('DASHBOARD_USER')")
 	public ModelAndView dashboard(){
 
 		Map<String,Object> data = new HashMap<>();
@@ -60,6 +60,7 @@ public class Dashboard extends BaseController{
 	}
 
 	@RequestMapping(value={"/export-dailynav"},method=RequestMethod.GET)
+	@PreAuthorize("hasRole('DEV') OR hasRole('DASHBOARD_USER')")
 	public ModelAndView exportDailyRegionAvailability(@RequestParam(value="span",required=true) String span){
 		
 		List<DailyRegionAvailability> resultList = navService.getAvailabilities( TimeSpan.valueOf(span.toUpperCase()), DailyRegionAvailability.class);
@@ -71,6 +72,7 @@ public class Dashboard extends BaseController{
 	}
 	
 	@RequestMapping(value={"/export-clusternav"},method=RequestMethod.GET)
+	@PreAuthorize("hasRole('DEV') OR hasRole('DASHBOARD_USER')")
 	public ModelAndView exportClusterAvailability( @RequestParam(value="region",required=true) String region,
 													@RequestParam(value="span",required=true) String span)
 	{
@@ -97,6 +99,7 @@ public class Dashboard extends BaseController{
 	}
 	
 	@RequestMapping(value={"/export-regionalnav"},method=RequestMethod.GET)	
+	@PreAuthorize("hasRole('DEV') OR hasRole('DASHBOARD_USER')")
 	public ModelAndView exportRegionAvailability(@RequestParam(value="span",required=true) String span ){
 		List<RegionAvailability> availabilities = navService.getAvailabilities(TimeSpan.valueOf(span), RegionAvailability.class);
 		Map<String, Object> model = new HashMap<>();
@@ -106,6 +109,7 @@ public class Dashboard extends BaseController{
 	}
 	
 	@RequestMapping(value="/export-nedown",method=RequestMethod.GET,produces="application/json")
+	@PreAuthorize("hasRole('DEV') OR hasRole('DASHBOARD_USER')")
 	public ModelAndView exportCurrentNEDown(){
 		
 		Map<String,Object> model = new HashMap<>();
@@ -114,9 +118,13 @@ public class Dashboard extends BaseController{
 		return new ModelAndView(new NEDownExcelView(), model);
 	}
 	
+	
+	
 	@InitBinder 
 	protected void initBinder(WebDataBinder binder) { 
 		binder.registerCustomEditor(TimeSpan.class, new TimespanEnumConverter());
 	}
+	
+	
 
 }

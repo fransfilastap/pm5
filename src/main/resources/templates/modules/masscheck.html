@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"></meta>
+<title>Insert title here</title>
+</head>
+<body>
+
+	<div th:fragment="masscheck">
+	        <div class="row mb-lg">
+	                <div class="col-md-12">
+	                <div class="loading"><img th:src="@{img/rolling.gif}"></img></div>
+	                    <div class="clearfix">
+	                        <ul id="tabs1" class="nav nav-tabs pull-left"> <!-- remove pull-left to get a cool effect too -->
+	                            <li class=""><a href="#tab1" data-toggle="tab">TEXT INPUT</a></li>
+	                            <li class="active"><a href="#tab2" data-toggle="tab">FILE UPLOAD</a></li>
+	                        </ul>
+	                    </div>
+	                    <div id="tabs1c" class="tab-content mb-lg">
+	                        <div class="tab-pane clearfix" id="tab1">
+	                        <form action="masscheck-text" method="post" id="masscheckform">
+	                            <div class="col-md-12">
+	                                <h4>SITE ID</h4>
+	                                <textarea name="sites" rows="3" class="autogrow form-control transition-height" id="elastic-textarea"
+	                                          placeholder="Put site id here. 
+	e.g : 
+	12345
+	6789
+	101112"></textarea>
+	                            </div>
+	                            <p></p>
+	                            <div class="col-md-12" style="margin-top:10px;">
+	                                <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Check</button>
+	                            </div>                    
+	                        </form>
+	                        </div>
+	                        <div class="tab-pane active" id="tab2">
+	                            <form class="dropzone dz-clickable" action="masscheck-excel-upload" id="my-awesome-dropzone"><div class="dz-default dz-message"><span>Drop XLS File Here</span></div></form>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	
+	
+	<div id="w" class="easyui-window" title="Mass Check Result" style="width:80%;height:400px;padding:0px;" data-options="
+	            iconCls:'icon-save',
+	            closed: true,
+	            onResize:function(){
+	                $(this).window('hcenter');
+	            }">
+	            <div class="easyui-layout" data-options="fit:true">
+	            <table id="dg" title="EXCEL MASS CHECKING"
+	            url=""
+	            toolbar="#toolbar" pagination="true"
+	            rownumbers="true" fitColumns="true" singleSelect="true" data-options="region:'center',fit:true">
+	                <thead>
+	                    <tr>
+	                        <th field="site_id" width="10">SITE ID</th>
+	                        <th field="site" width="20">SITE NAME</th>
+	                        <th field="hubOrHut" width="20">HUT/HUB</th>
+	                        <th field="towerprovider" width="20">Tower Provider</th>
+	                        <th field="tower_id" width="20">Tower ID</th>
+	                        <th field="spv" width="20">SPV</th>
+	                        <th field="mgr" width="20">MGR</th>
+	                        <th field="summary" width="100">ALARM</th>
+	                        <th field="isDead" width="10">DOWN</th>  
+	                    </tr>
+	                </thead>
+	            </table>
+	        </div>
+	    </div>      
+	
+	<div id="w2" class="easyui-window" title="Mass Check Result" style="width:80%;height:400px;padding:0px;" data-options="
+	            iconCls:'icon-save',
+	            closed: true,
+	            onResize:function(){
+	                $(this).window('hcenter');
+	            }">
+	            <div class="easyui-layout" data-options="fit:true">
+	            <table id="dg1" title="TEXT MASS CHECKING"
+	            url=""
+	            toolbar="#toolbar2" pagination="true"
+	            rownumbers="true" fitColumns="true" singleSelect="true" data-options="region:'center',fit:true">
+	                <thead>
+	                    <tr>
+	                        <th field="site_id" width="10">SITE ID</th>
+	                        <th field="site" width="20">SITE NAME</th>
+	                        <th field="hubOrHut" width="20" data-options="align:'center'">HUT/HUB</th>
+	                        <th field="towerprovider" width="20" data-options="align:'center'">Tower Provider</th>
+	                        <th field="tower_id" width="20">Tower ID</th>
+	                        <th field="spv" width="20">SPV</th>
+	                        <th field="mgr" width="20">MGR</th>
+	                        <th field="summary" width="100" data-options="align:'left'">ALARM</th>
+	                        <th field="isDead" width="10" data-options="align:'center',styler:cellStyler">DOWN</th> 
+	                    </tr>
+	                </thead>
+	            </table>
+	        </div>
+	    </div> 
+	
+	    <div id="toolbar">
+	        <a href="" class="easyui-linkbutton" iconCls="icon-print" plain="true">Export To Excel</a>
+	        <a href="" target="_blank" class="easyui-linkbutton" iconCls="icon-more" plain="true" id="openInMap2">GeOL it!</a>
+	        <a href="#" class="easyui-linkbutton" iconCls="icon-more" plain="true">Summary</a>
+	    </div> 
+	    <div id="toolbar2">
+	        <a href="#" id="export2" class="easyui-linkbutton" iconCls="icon-print" plain="true">Export To Excel</a>
+	        <a href="" target="_blank" class="easyui-linkbutton" iconCls="icon-more" plain="true" id="openInMap2">GeOL it!</a>
+	        <a href="#" id="exportSummary2" class="easyui-linkbutton" iconCls="icon-more" plain="true">Summary</a>
+	    </div> 
+	    <script type="text/javascript">
+	        function cellStyler(value,row,index){
+	            if (value != "NO"){
+	                return 'background-color:red;color:#000;';
+	            }
+	        }
+	    </script>
+	</div>
+	<div th:fragment="js">
+		<script type="text/javascript" th:src="@{map/spiderfy/oms.min.js}"></script>
+		<script type="text/javascript" th:src="@{vendor/datatables/media/js/jquery.dataTables.js}"></script>
+		<script type="text/javascript" th:src="@{vendor/bootstrap-select/bootstrap-select.min.js}"></script>
+		<script type="text/javascript" th:src="@{vendor/easyui/jquery.easyui.min.js}"></script>
+		<script type="text/javascript" th:src="@{vendor/easyui/datagrid-filter.js}"></script>
+		<script type="text/javascript" th:src="@{vendor/bootstrap-sass/vendor/assets/javascripts/bootstrap/tab.js}"></script>
+		<script type="text/javascript" th:src="@{vendor/dropzone/downloads/dropzone.min.js}"></script>
+	</div>
+	<div th:fragment="css">
+		<link rel="stylesheet" th:href="@{plugins/file-uploader/css/blueimp-gallery.min.css}"></link>
+		<link rel="stylesheet" th:href="@{plugins/file-uploader/css/jquery.fileupload.css}"></link>
+		<link rel="stylesheet" th:href="@{plugins/file-uploader/css/jquery.fileupload-ui.css}"></link>
+		<link rel="stylesheet" th:href="@{vendor/easyui/themes/default/easyui.css}"></link>
+		<link rel="stylesheet" th:href="@{vendor/easyui/themes/icon.css}"></link>
+	</div>
+		<div th:fragment="script">
+		<script type="text/javascript" th:src="@{jsmodule/masscheck.js}"></script>
+	</div>
+</body>
+</html>

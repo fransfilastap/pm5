@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.thymeleaf.spring4.SpringTemplateEngine;
 
 
 @Configuration
@@ -22,6 +23,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	
 	private @Autowired UserDetailsService userDetailsService;
+	private @Autowired SpringTemplateEngine templateEngine;
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -62,8 +64,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/**/*.jpg")
 				.antMatchers("/**/*.png")
 				.antMatchers("/**/*.gif")
-				.antMatchers("/**/*.html")
-				.antMatchers("/api/**");
+				.antMatchers("/**/*.html");
 	}
 	
 	@Bean(name="passwordEncoder")

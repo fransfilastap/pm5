@@ -12,7 +12,16 @@ import org.springframework.stereotype.Repository;
 
 import id.franspratama.geol.core.pojo.RegionAvailability;
 
-
+/**
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * @author fransfilastap
+ *
+ */
 @Repository("acrosspmRegionAvailabilityRepository")
 public class AcrosspmRegionAvailabilityRepository implements AcrosspmAvailabilityRepository<RegionAvailability>{
 	

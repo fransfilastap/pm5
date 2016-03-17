@@ -1,24 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
 <meta charset="ISO-8859-1"></meta>
 <title>Menu List</title>
 </head>
 <body>
 	<div th:fragment="menu">
-		<ul class="sidebar-nav">
-            <li >
-                <a href="dashboard" data-no-pjax="data-no-pjax">
-                    <span class="icon">
-                        <i class="glyphicon glyphicon-stats"></i>
-                    </span>
-                    Dashboard                
-                </a>
-            </li>    
-        </ul>
+		<div sec:authorize="hasRole('DASHBOARD_USER') or hasRole('DEV')">
+			<ul class="sidebar-nav">
+	            <li >
+	                <a href="dashboard" data-no-pjax="data-no-pjax">
+	                    <span class="icon">
+	                        <i class="glyphicon glyphicon-stats"></i>
+	                    </span>
+	                    Dashboard                
+	                </a>
+	            </li>    
+	        </ul>
+		</div>
         
         <h5 class="sidebar-nav-title">Tools</h5>
         <ul class="sidebar-nav">
+        	<div sec:authorize="hasRole('MAP_USER') OR hasRole('DEV')" th:remove="tag">
             <li>
                 <a href="#geo_kpi_parent" class="collapsed" data-toggle="collapse" data-parent="#sidebar">
                     <span class="icon">
@@ -30,35 +34,28 @@
                              <li> <a th:href="@{/customer-complaint}" data-no-pjax="data-no-pjax">Customer Complain</a> </li>
                              <li> <a th:href="@{/vip-group}" data-no-pjax="data-no-pjax">VIP Site</a> </li>
                              <li> <a th:href="@{/jalur-lebaran}" data-no-pjax="data-no-pjax">Jalur Lebaran</a> </li>
-                             <li> <a th:href="@{/event-mapping}" data-no-pjax="data-no-pjax">Event</a> </li>
                      </ul>
            </li>
+           </div>
+           <div sec:authorize="hasRole('MASSCHECK_USER') or hasRole('DEV')" th:remove="tag">
            <li>
-                <a th:href="@{/masscheck}">
+                <a th:href="@{/masscheck}" data-no-pjax="data-no-pjax">
                     <span class="icon">
                         <i class="fa fa-search"></i>
                     </span>
                     Mass Check     </a>
            </li>
+           </div>
+           <div sec:authorize="hasRole('ACTIVEALARM_USER') or hasRole('DEV')" th:remove="tag">
            <li>
-                <a href="#subscriber_trend" class="collapsed" data-toggle="collapse" data-parent="#sidebar">
-                    <span class="icon">
-                        <i class="fa fa-heart"></i>
-                    </span>
-                    Subscriber   <i class="toggle fa fa-angle-down"></i>
-                </a>
-                <ul id="subscriber_trend" class="collapse">
-                        <li > <a th:href="@{/subscriber.trend?type=region}" data-no-pjax="data-no-pjax">Regional View</a> </li>
-                        <li > <a href="@{/subscriber.trend?type=bsc}">BSC/RNC View</a> </li>
-                </ul>
-           </li>
-           <li>
-                <a th:href="@{/activealarm?netcool}">
+                <a th:href="@{/active-alarm}" data-no-pjax="data-no-pjax">
                     <span class="icon">
                         <i class="fa fa-warning"></i>
                     </span>
                     Active Alarm </a>
            </li>
+           </div>
+           <div sec:authorize="hasRole('PATHFINDER_USER') or hasRole('DEV')" th:remove="tag">
            <li>
                 <a href="#trans_path" class="collapsed" data-toggle="collapse" data-parent="#sidebar">
                     <span class="icon">
@@ -67,11 +64,13 @@
                     Path Finder                                        <i class="toggle fa fa-angle-down"></i>
                                     </a>
                 <ul id="trans_path" class="collapse">
-                        <li > <a th:href="@{/path}">Dictionary</a> </li>
+                        <li > <a th:href="@{/path}" data-no-pjax="data-no-pjax">Dictionary</a> </li>
                 </ul>
-           </li>    
+           </li>
+           </div>    
         </ul>   
         
+        <div sec:authorize="hasRole('ADMIN') or hasRole('DEV')" th:remove="tag">
         <h5 class="sidebar-nav-title">Administration</h5>
         <ul class="sidebar-nav">
              <li>
@@ -99,7 +98,8 @@
                           <li > <a th:href="@{sec@role}">Role</a> </li>
                   </ul>
              </li>                 
-        </ul>     
+        </ul>  
+        </div>   
 	</div>
 </body>
 </html>

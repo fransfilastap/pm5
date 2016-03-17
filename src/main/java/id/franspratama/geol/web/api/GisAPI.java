@@ -1,8 +1,10 @@
 package id.franspratama.geol.web.api;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,7 +14,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import id.franspratama.geol.core.dao.ILebaranRouteRepository;
 import id.franspratama.geol.core.dao.IVipGroupRepository;
+import id.franspratama.geol.core.pojo.LebaranRoute;
+import id.franspratama.geol.core.pojo.LebaranRouteType;
 import id.franspratama.geol.core.pojo.VipGroup;
 import id.franspratama.geol.core.services.IGisService;
 
@@ -24,6 +29,7 @@ import id.franspratama.geol.core.services.IGisService;
  * @author fransfilastap
  *
  */
+
 @RestController("/gis")
 public class GisAPI {
 
@@ -32,9 +38,15 @@ public class GisAPI {
 	
 	@Autowired
 	IVipGroupRepository vipGroupRepository;
+	
+	@Autowired
+	ILebaranRouteRepository lebaranRouteRepository;
 
 	@Autowired
 	PasswordEncoder encoder;
+	
+	
+	
 	
 	
 	/**
@@ -48,9 +60,22 @@ public class GisAPI {
 	@RequestMapping(value="/statWithinRadius",method=RequestMethod.GET,produces="application/json")
 	public Set<GisDTO> getSiteStatusWithinRadius( @RequestParam(name="lat",required=true) double lat,
 										    @RequestParam(name="lng",required=true) double lng,
-										    @RequestParam(name="rad",required=true) double rad){
-		return gisServices.getSiteStatus(lat, lng, rad);
+										    @RequestParam(name="rad",required=true) double rad,
+										    @RequestParam(name="type",required=true) String type){
+		
+		Set<GisDTO> dtos = gisServices.getSiteStatus(lat, lng, rad);
+		
+		if( !type.equalsIgnoreCase( "all" ) ){
+			return dtos.stream().filter(dto->{
+				return dto.getTechnology().getTechnology().equalsIgnoreCase( type );
+			}).collect(Collectors.toSet());
+		}
+			
+		return dtos;
 	}
+	
+	
+	
 	
 	
 	/**
@@ -63,9 +88,24 @@ public class GisAPI {
 	 */
 	@RequestMapping(value="/statWithinRadiusOfSite",method=RequestMethod.GET,produces="application/json")
 	public Set<GisDTO> getSiteStatusWithinRadius(@RequestParam(name="site",required=true) String siteid,
-												@RequestParam(name="rad",required=true) double rad){
-		return gisServices.getSiteStatus(siteid, rad);
+												@RequestParam(name="rad",required=true) double rad,
+												@RequestParam(name="type",required=true) String type){
+		
+		
+		Set<GisDTO> dtos = gisServices.getSiteStatus(siteid, rad);
+		
+		if( !type.equalsIgnoreCase( "all" ) ){
+			return dtos.stream().filter(dto->{
+				return dto.getTechnology().getTechnology().equalsIgnoreCase( type );
+			}).collect(Collectors.toSet());
+		}
+			
+		return dtos;
 	}
+	
+	
+	
+	
 	
 	
 	/**
@@ -82,6 +122,9 @@ public class GisAPI {
 	
 	
 	
+	
+	
+	
 	/**
 	 * Get brief information of selected site
 	 * 
@@ -93,6 +136,11 @@ public class GisAPI {
 		return gisServices.getBriefInformationOfSite(siteId);
 	}
 	
+	
+	
+	
+	
+	
 	/**
 	 * 
 	 * @param siteId
@@ -103,6 +151,11 @@ public class GisAPI {
 		return gisServices.getSiteAlarms(siteId);
 	}
 
+	
+	
+	
+	
+	
 	/**
 	 * 
 	 * @param siteId
@@ -123,17 +176,95 @@ public class GisAPI {
 	 * @return collection of site status
 	 */
 	@RequestMapping(value="/vipgroupstats",method=RequestMethod.GET,produces="application/json")
-	public Set<GisDTO> getVipGroupStats(@RequestParam(name="group",required=true) long groupid){
+	public Set<GisDTO> getVipGroupStats(
+										@RequestParam(name="group",required=true) long groupid,
+										@RequestParam(name="type",required=true) String type){
+		
 		VipGroup group = vipGroupRepository.findOne( groupid );
-		return gisServices.getSiteStatus(group);
+		
+		Set<GisDTO> dtos = gisServices.getSiteStatus(group).stream().filter(dto->{
+			return ( type.equalsIgnoreCase("all") ? true : dto.getTechnology().getTechnology().equalsIgnoreCase( type ) );
+		}).collect(Collectors.toSet());
+		
+		return dtos;
 	}
 	
 	
+	
+	
+	
+	
+	/**
+	 * Get Site Availability
+	 * 
+	 * 
+	 * @param siteid
+	 * @param version
+	 * @return
+	 */
 	@RequestMapping(value="/sites-availability",method=RequestMethod.GET,produces="application/json")
-	public Set<SiteAvailabilityDTO> getSiteAvailability2G( 
+	public Map<String, List<SiteAvailabilityDTO>> getSiteAvailability( 
 			@RequestParam(name="site", required=true) String siteid,
-			@RequestParam(name="ver",required=false) String version){
-		return gisServices.getSiteAvailability(siteid, version);
+			@RequestParam(name="version",required=false) String version){
+		
+		Map<String, List<SiteAvailabilityDTO>> dtos = gisServices.getSiteAvailability(siteid, version).stream().collect(Collectors.groupingBy(SiteAvailabilityDTO::getCellName));
+
+		return dtos;
+	}
+	
+	
+	
+	
+	
+	
+	/**
+	 * Get lebaran route list
+	 * 
+	 * 
+	 * 
+	 * @param region
+	 * @param type
+	 * @return json
+	 */
+	@RequestMapping(value="/fetch-lebaran-route",method=RequestMethod.GET, produces="application/json")
+	public Set<LebaranRoute> getLebaranRoutesByType(
+								@RequestParam(name="region", required=true) String region, 
+								@RequestParam(name="type",required=true) int type){
+		
+		Set<LebaranRoute> lebaranRoutes = lebaranRouteRepository.findByTypeAndRegion(new LebaranRouteType( type, "" ), region);
+		
+		return lebaranRoutes;
+	}
+	
+	
+	
+	
+	
+	/**
+	 * 
+	 * Get lebaran route status
+	 * 
+	 * 
+	 * 
+	 * @param route
+	 * @param version
+	 * @return json
+	 */
+	@RequestMapping(value="/lebaran-route-status",method=RequestMethod.GET, produces="application/json")
+	public Set<GisDTO> getLebaranSiteStatus( 
+					@RequestParam(name="route",required=true) int route,
+					@RequestParam(name="version",required=false) String version
+				){
+		
+		LebaranRoute oRoute = new LebaranRoute();
+					 oRoute.setId( route );
+		
+		Set<GisDTO> dtos = gisServices.getSiteStatus( oRoute ).stream().filter(dto->{
+			return ( version.equalsIgnoreCase("all") ? true : dto.getTechnology().getTechnology().equalsIgnoreCase( version ) );
+		}).collect(Collectors.toSet());
+		
+		
+		return dtos;
 	}
 
 }

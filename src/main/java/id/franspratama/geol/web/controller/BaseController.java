@@ -1,14 +1,13 @@
+
 package id.franspratama.geol.web.controller;
 
 import java.util.Map;
 
-import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.ModelAndView;
 
 import id.franspratama.geol.core.dao.IUserRepository;

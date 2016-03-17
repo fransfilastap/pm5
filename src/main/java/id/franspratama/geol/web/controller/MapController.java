@@ -7,7 +7,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class Map {
+public class MapController extends BaseController{
+	
+	public MapController(){
+		super();
+	}
 
 	@RequestMapping(value={"/map"})
 	public ModelAndView map(@RequestParam(value = "cc", required = false) String type){

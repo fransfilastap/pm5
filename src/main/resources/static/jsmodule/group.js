@@ -78,6 +78,15 @@ Map.prototype.init = function(latLng){
 
 	});
 
+	this.$_sne = $("select#site_type");
+
+	this.netype = "all";
+	var self = this;
+
+	this.$_sne.change(function(){
+		self.netype = self.$_sne.val();
+		self.generateResult();
+	});
 }
 
 Map.prototype.setCircle = function(latLng, meters) {
@@ -205,7 +214,7 @@ Map.prototype.__initGoogleGeocoding = function( input ){
 		var placeName = place[0].name;
 		self.RadiusWidget(leafletLocation.lat,leafletLocation.lng,1000,placeName);
 		self.generateResult();
-	})
+	});
 }
 
 Map.prototype.__clearPath = function(){
@@ -308,10 +317,15 @@ Map.prototype.addAvailabilityListener = function(){
 
 		var _id = $(this).data('id');
 		var _pattern  = /G$/;
+		var _pattern4g = /E$/;
 		var _ty = "2g";
 					
 		if( _pattern.test( _id ) ){
 			_ty = "3g";
+		}
+		
+		if( _pattern4g.test( _id ) ){
+			_ty = "4G";
 		}
 
 		me.getSiteAvailability( _id, _ty );
@@ -329,9 +343,9 @@ Map.prototype.renderPopup = function(site){
     "<div>Node : <b class='node'>"+site.node+"</b></div>"+
 	"<div>Zone : <b class='zone'>"+site.zone+"</b></div>"+
     "<div class='form-action'>"+
-        "<a class='btn btn-success btn-sm siteavail' data-id='' href='#'><i class='fa fa-signal'>  </i> Availability</a> "+
+        "<a class='btn btn-success btn-sm siteavail' data-id='"+site.siteId+"' href='#'><i class='fa fa-signal'>  </i> Availability</a> "+
 	    "<!-- "+
-        "<a class='btn btn-danger btn-sm resetsite' href='' data-id=''><i class='fa fa-wrench'></i> FTR </a>"+
+        "<a class='btn btn-danger btn-sm resetsite' href='' data-id='"+site.siteId+"'><i class='fa fa-wrench'></i> FTR </a>"+
         "-->"+
     "</div>";
 	
@@ -755,7 +769,7 @@ Map.prototype.generateResult = function(options){
 	this.showLoading();
 
 	var rad = self.radius/1000;
-	var api_url = self.backend + "?group="+$("select#route").val();
+	var api_url = self.backend + "?group="+$("select#route").val()+"&type="+self.netype;
 	
 	this.xhr = $.ajax({			
 		type: "GET",
@@ -834,21 +848,7 @@ Map.prototype.addSearchBar = function(){
 
 	});
 
-	this.$_sne = $("select#site_type");
 
-	this.netype = "all";
-	var self = this;
-
-	this.$_sne.change(function(){
-		self.netype = self.$_sne.val();
-
-		if( self._position ){
-			var custLat = self.lat;
-			var custLng = self.lng;
-			self.generateResult();
-		}
-
-	});
 
 }
 
@@ -967,10 +967,10 @@ Map.prototype.unixTimeToHumanTime = function(unixtime){
 Map.prototype.getSiteAvailability = function( _site , _type ){
 	var me = this;
     var _data = {
-          'poc'  : _site,
-          'type' : _type,
+          'site'  : _site,
+          'version' : _type,
         };
-    var _url = "availability?site&detail";
+    var _url = "sites-availability";
 
     jQuery.ajax({
     	url : _url,
@@ -1014,7 +1014,7 @@ Map.prototype.getSiteAvailability = function( _site , _type ){
 		        	formatter : function()
 		        	{	
 
-		        		var series = chartData.series_data[ this.series.name ];
+		        		var series = chartData[ this.series.name ];
 
 		        		return "CELL : <b>"+this.series.name+"</b><br>TIME : <b>"+me.unixTimeToHumanTime( this.x )+"</b><br>Availability : <b>"+this.y+"%</b>";
 		        	}
@@ -1042,20 +1042,18 @@ Map.prototype.getSiteAvailability = function( _site , _type ){
 		        series: []
 		    };
 
-	        $.each(chartData.series_data,function(index,value){
+	        $.each(chartData,function(index,value){
 				var srs = {"name":index,"data":[]};
-				var dt = chartData.series_data[index];
+				var dt = chartData[index];
 	          	$.each( dt, function(i,v){
-	          		var sd = [ v.time , v.avail ];
+	          		var sd = [ v.resultTime , v.availability ];
 	          		srs.data.push( sd );
 	          	});
-
 	          	chartOptions.series.push( srs );
 	        });	    
 
 
 		    $("#chartCanvas").highcharts( chartOptions );
-
 	        $("#availabilitymodal").modal("show");
 
     	},

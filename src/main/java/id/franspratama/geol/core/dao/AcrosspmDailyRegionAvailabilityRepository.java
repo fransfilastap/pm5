@@ -12,7 +12,15 @@ import org.springframework.stereotype.Repository;
 
 import id.franspratama.geol.core.pojo.DailyRegionAvailability;
 
-
+/**
+ * 
+ * 
+ * 
+ * 
+ * 
+ * @author fransfilastap
+ *
+ */
 @Repository("acrosspmDailyRegionAvailabilityRepository")
 public class AcrosspmDailyRegionAvailabilityRepository implements AcrosspmAvailabilityRepository<DailyRegionAvailability>{
 
@@ -33,7 +41,9 @@ public class AcrosspmDailyRegionAvailabilityRepository implements AcrosspmAvaila
 			
 			@Override
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
-				DailyRegionAvailability availability = availabilities.get(i);				
+				
+				DailyRegionAvailability availability = availabilities.get(i);
+				
 				ps.setString(1, sqlTimestampFormat.format(availability.getTime()));
 				ps.setString(2, availability.getRegion());
 				ps.setDouble(3, availability.getAvailability());

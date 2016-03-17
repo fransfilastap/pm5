@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"></meta>
+<title>Insert title here</title>
+</head>
+<body>
+
+<div th:fragment="activealarm">
+    <style type="text/css">
+        #fm{
+            margin:0;
+            padding:10px 30px;
+        }
+        .ftitle{
+            font-size:14px;
+            font-weight:bold;
+            padding:5px 0;
+            margin-bottom:10px;
+            border-bottom:1px solid #ccc;
+        }
+        .fitem{
+            margin-bottom:5px;
+        }
+        .fitem label{
+            display:inline-block;
+            width:80px;
+        }
+        .fitem input{
+            width:160px;
+        }
+    </style>
+                        <table id="active_alarm_list" title="ACTIVE ALARM LIST" style="height:500px"
+                                url="active-alarm-list"
+                                toolbar="#toolbar"
+                                footer="#footer"
+                                idField="EventID"
+                                data-options="view:scrollview,fitColumns:true,rownumbers:true,singleSelect:true,pageSize:500">
+                            <thead>
+                                <tr>
+                                    <th field="Severity" width="10" sortable="true" formatter="stylingSeverity">Severity</th>
+                                    <th field="spvarea" width="30" sortable="true">Supervisor</th>
+                                    <th field="mgrarea" width="30" sortable="true">Manager</th>
+                                    <th field="Node" width="10" sortable="true">Node</th>
+                                    <th field="Site" width="20" sortable="true">Site</th>
+                                    <th field="Summary" width="100" sortable="true">Summary</th>
+                                    <th field="Zone" width="10" sortable="true">Zone</th>
+                                    <th field="TTNo" width="10" sortable="true">TTNo</th>
+                                    <th field="LastOccurrence" width="20" sortable="true">Last Occurrence</th>
+                                    <th field="time" width="20" sortable="true">Last FTR</th>
+                                    <th field="remark_category" width="30" sortable="true">Remark Category</th>
+                                    <th field="remark" width="20" sortable="true">Remark</th>
+                                    <th field="remark_time" width="20" sortable="true">Remark Time</th>
+                                    <th field="fullname" width="20" sortable="true">Remarked By</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div id="footer"></div>
+                        <div id="toolbar">
+                            <span>Severity:</span>
+                            <select id="severity" name="severity">
+                                <option value="all">All</option>
+                            </select>
+                            <span>Manager:</span>
+                            <select id="mgrarea" name="mgrarea">
+                                <option value="all">All</option>
+                            </select>
+                            <span>Supervisor:</span>
+                            <select id="spvarea" name="spvarea">
+                                <option value="all">All</option>
+                            </select>
+                            <span>Node:</span>
+                            <input id="node" name="node" style="line-height:20px;width:70px;"></input>
+                            <span>Site:</span>
+                            <input id="site" name="site" style="line-height:20px;width:100px;"></input>
+                            <span>Zone:</span>
+                            <select id="zone_filter" style="line-height:26px;" name="zone">
+                                <option value="all">All</option>
+                            </select>
+                            <span>Summary:</span>
+                            <input id="summary" name="summary" style="line-height:20px;width:100px;"></input>
+                            <span>TTNo:</span>
+                            <input id="ttno" name="ttno" style="line-height:20px;"></input>
+                            <span>Last Occurence</span>
+                            <input id="last_occurrence_filter" name="last_occurrence"></input>
+                            <a href="#" id="search" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px">Search</a>
+                        </div>
+
+                        <?php echo $geol_terminal; ?>
+
+                        <div id="alarmRow" class="easyui-menu" style="width:200px">
+                            <div onclick="javascript:$('#remark_dialog').dialog('open')">Remark</div>
+                        </div>
+
+                        <div id="remark_dialog" class="easyui-dialog" closed="true" title="Remark Form" style="width:600px;height:400px;padding:10px"
+        toolbar="#remark-toolbar" buttons="#remark-buttons">
+        <div class="ftitle">Alarm Remark Form.</div>
+        <form id="fm" method="post" novalidate="novalidate">
+            <div class="fitem">
+                <label>Remark By:</label>
+                <input name="remarker" class="easyui-textbox" required="" disabled="disabled" value=""></input>
+                <input name="user_id" type="hidden" value=""></input>
+            </div>
+            <div class="fitem">
+                <label>Category:</label>
+                <select id="remark_category" class="easyui-combobox" name="dept" style="width:200px;">
+                    <option value="">Choose category</option>
+                </select>
+            </div>
+            <div class="fitem">
+                <label>Remark :</label>
+                <input name="remark"  id="remarkval" value="Put your remark here." style="width:300px;height:100px"></input>
+            </div>
+
+        </form>
+</div>
+<div id="remark-buttons">
+    <table cellpadding="0" cellspacing="0" style="width:100%">
+        <tr>
+            <td style="text-align:right">
+                <a href="#" class="easyui-linkbutton" iconCls="icon-save" id="saveremark">Save</a>
+                <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" id="closeremarkdlg">Close</a>
+            </td>
+        </tr>
+    </table>
+</div>
+</div>
+<div th:fragment="js">
+	<script type="text/javascript" th:src="@{vendor/MetroJS/release/MetroJs.Full/MetroJs.js}"></script>
+	<script type="text/javascript" th:src="@{vendor/skycons/skycons.js}"></script>
+	<script type="text/javascript" th:src="@{js/widgets.js}"></script>
+	<script type="text/javascript" th:src="@{vendor/datatables/media/js/jquery.dataTables.js}"></script>
+	<script type="text/javascript" th:src="@{highchart/js/highcharts.js}"></script>
+	<script type="text/javascript" th:src="@{highchart/js/modules/exporting.js}"></script>
+	<script type="text/javascript" th:src="@{vendor/groupedcategory/grouped-categories.js}"></script>
+	<script type="text/javascript" th:src="@{vendor/daterangepicker/moment.min.js}"></script>
+	<script type="text/javascript" th:src="@{vendor/daterangepicker/daterangepicker.js}"></script>
+	<script type="text/javascript" th:src="@{vendor/easyui/jquery.easyui.min.js}"></script>
+	<script type="text/javascript" th:src="@{vendor/easyui/datagrid-filter.js}"></script>
+	<script type="text/javascript" th:src="@{vendor/easyui/datagrid-scrollview.js}"></script>
+	<script type="text/javascript" th:src="@{vendor/easyui/datagrid-detailview.js}"></script>
+</div>
+<div th:fragment="css">
+	<link rel="stylesheet" th:href="@{vendor/daterangepicker/daterangepicker-bs3.css}"></link>
+	<link rel="stylesheet" th:href="@{vendor/easyui/themes/bootstrap/easyui.css}"></link>
+	<link rel="stylesheet" th:href="@{vendor/easyui/themes/icon.css}"></link>
+</div>
+	<div th:fragment="script">
+	<script type="text/javascript" th:src="@{jsmodule/activealarm.js}"></script>
+</div>
+</body>
+</html>

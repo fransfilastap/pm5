@@ -398,7 +398,7 @@ Map.prototype.addAvailabilityListener = function(){
 			_ty = "3g";
 		}
 		
-		if( _pattern.test( _id ) ){
+		if( _pattern4g.test( _id ) ){
 			_ty = "4G";
 		}
 
@@ -449,9 +449,9 @@ Map.prototype.renderPopupAlarm = function(site,alarm){
 	    "<div>Node : <b class='node'>"+site.node+"</b></div>"+
 		"<div>Zone : <b class='zone'>"+site.zone+"</b></div>"+
 	    "<div class='form-action'>"+
-	        "<a class='btn btn-success btn-sm siteavail' data-id='' href='#'><i class='fa fa-signal'>  </i> Availability</a> "+
+	        "<a class='btn btn-success btn-sm siteavail' data-id='"+site.siteId+"' href='#'><i class='fa fa-signal'>  </i> Availability</a> "+
 		    "<!-- "+
-	        "<a class='btn btn-danger btn-sm resetsite' href='' data-id=''><i class='fa fa-wrench'></i> FTR </a>"+
+	        "<a class='btn btn-danger btn-sm resetsite' href='' data-id='"+site.siteId+"'><i class='fa fa-wrench'></i> FTR </a>"+
 	        "-->"+
 	    "</div>"+
 	    "<div><b>Alarm : </b></div>"+
@@ -1112,7 +1112,7 @@ Map.prototype.getSiteAvailability = function( _site , _type ){
 		        	formatter : function()
 		        	{	
 
-		        		var series = chartData.series_data[ this.series.name ];
+		        		var series = chartData[ this.series.name ];
 
 		        		return "CELL : <b>"+this.series.name+"</b><br>TIME : <b>"+me.unixTimeToHumanTime( this.x )+"</b><br>Availability : <b>"+this.y+"%</b>";
 		        	}
@@ -1140,11 +1140,11 @@ Map.prototype.getSiteAvailability = function( _site , _type ){
 		        series: []
 		    };
 
-	        $.each(chartData.series_data,function(index,value){
+	        $.each(chartData,function(index,value){
 				var srs = {"name":index,"data":[]};
-				var dt = chartData.series_data[index];
+				var dt = chartData[index];
 	          	$.each( dt, function(i,v){
-	          		var sd = [ v.time , v.avail ];
+	          		var sd = [ v.resultTime , v.availability ];
 	          		srs.data.push( sd );
 	          	});
 

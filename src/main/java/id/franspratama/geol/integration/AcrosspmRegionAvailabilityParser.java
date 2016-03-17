@@ -20,6 +20,18 @@ import org.springframework.stereotype.Component;
 import id.franspratama.geol.core.helper.DateHelper;
 import id.franspratama.geol.core.pojo.RegionAvailability;
 
+/**
+ * 
+ * TOLONG DIPERHATIKAN UNTUK PROGRAMMER SELANJUTNYA
+ * Kolom TCH adalah untuk teknologi 2G dan Cell untuk teknologi 3G
+ * 
+ * 
+ * 
+ * 
+ * 
+ * @author fransfilastap
+ *
+ */
 @Component("regionAvailbailityParser")
 public class AcrosspmRegionAvailabilityParser implements Parser<RegionAvailability>{
 

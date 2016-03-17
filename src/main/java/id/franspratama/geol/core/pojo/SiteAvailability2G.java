@@ -28,7 +28,7 @@ public class SiteAvailability2G implements Serializable{
 	@Column(name="cellname")
 	private String cellName;
 	
-	@Column(name="siteId")
+	@Column(name="siteid")
 	private String siteId;
 	
 	@Column(name="poc")

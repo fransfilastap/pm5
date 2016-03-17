@@ -20,6 +20,18 @@ import org.springframework.stereotype.Component;
 import id.franspratama.geol.core.helper.DateHelper;
 import id.franspratama.geol.core.pojo.DailyRegionAvailability;
 
+/**
+ * 
+ * TOLONG DIPERHATIKAN UNTUK PROGRAMMER SELANJUTNYA
+ * Kolom TCH adalah untuk teknologi 2G dan Cell untuk teknologi 3G
+ * 
+ * 
+ * 
+ * 
+ * 
+ * @author fransfilastap
+ *
+ */
 @Component("acrosspmDailyRegioAvailabilityParser")
 public class AcrosspmDailyRegionAvailabilityParser implements Parser<DailyRegionAvailability>{
 
@@ -57,8 +69,8 @@ public class AcrosspmDailyRegionAvailabilityParser implements Parser<DailyRegion
 				}	
 
 				Cell regionCell = row.getCell(1);
-				Cell tchCell = row.getCell(2);
-				Cell cellCell = row.getCell(3);
+				Cell cellCell = row.getCell(2);
+				Cell tchCell = row.getCell(3);
 				
 				String regionVal = regionCell.getStringCellValue();
 				double tchVal = 0;

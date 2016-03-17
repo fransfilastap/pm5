@@ -129,8 +129,8 @@ public class EmailTask{
 							 
 			dailyAvailabilityMessage.composeMessage(content, message);
 			
-			Transport.send(message.getMessage());			
-			
+			Transport.send( message.getMessage() );			
+			 
 		}
 	}
 

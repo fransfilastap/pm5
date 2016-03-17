@@ -68,4 +68,19 @@ public interface IWFMTicketAndWORepository extends JpaRepository<WFMTicketAndWor
 	public List<WFMTicketAndWorkOrder> getWFMTicketAndWO(@Param("latitude") double latitude,
 			@Param("longitude") double longitude,
 			@Param("radius") double radius);
+	
+	
+	@Query(name="woLebaran",value="SELECT wo.* FROM wfm_tt_wo wo INNER JOIN( "+
+			" SELECT activealarm.* FROM netcool.activealarm "+
+			"			INNER JOIN( "+
+			"				 SELECT s.SITEID FROM geolv2.sites s "+
+			"				 INNER JOIN ( "+
+			"					SELECT lrs.site_id "+
+			"					FROM lebaran_route_sites lrs "+
+			"					LEFT JOIN lebaran_routes lr ON lr.ID = lrs.route_id "+
+			"					WHERE lr.ID = :route "+
+			"				 ) ls on ls.site_id = s.ID "+
+			"			) sites ON sites.siteid = activealarm.siteid "+
+			") alarms on wo.ticket_id = alarms.ttno group by wo.ticket_id",nativeQuery=true)
+	public List<WFMTicketAndWorkOrder> getWFMTicketAndWO( @Param("route") int route );
 }

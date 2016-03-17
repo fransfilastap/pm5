@@ -20,7 +20,18 @@ import org.springframework.stereotype.Component;
 import id.franspratama.geol.core.helper.DateHelper;
 import id.franspratama.geol.core.pojo.ClusterAvailability;
 
-
+/**
+ * 
+ * TOLONG DIPERHATIKAN UNTUK PROGRAMMER SELANJUTNYA
+ * Kolom TCH adalah untuk teknologi 2G dan Cell untuk teknologi 3G
+ * 
+ * 
+ * 
+ * 
+ * 
+ * @author fransfilastap
+ *
+ */
 @Component("clusterAvailabilityParser")
 public class AcrosspmClusterAvailabilityParser implements Parser<ClusterAvailability>{
 
