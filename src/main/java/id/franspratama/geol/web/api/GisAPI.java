@@ -22,9 +22,9 @@ import id.franspratama.geol.core.pojo.VipGroup;
 import id.franspratama.geol.core.services.IGisService;
 
 /**
- * This class is provide information of sites based on geographical information.
+ * <p>This class is provide information of sites based on geographical information.
  * Information returned by this API class contains geographical properties such as latitude and longitude
- * that will be usefull for visualized in map
+ * that will be usefull for visualized in map</p>
  * 
  * @author fransfilastap
  *
@@ -50,6 +50,9 @@ public class GisAPI {
 	
 	
 	/**
+	 * 
+	 * <p> Get a set of GisDTO </p>
+	 * 
 	 * 
 	 * 
 	 * @param lat

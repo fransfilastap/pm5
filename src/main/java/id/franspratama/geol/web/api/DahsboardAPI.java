@@ -28,14 +28,36 @@ import id.franspratama.geol.core.services.AvailabilityService;
 import id.franspratama.geol.core.services.NEDownService;
 
 
+/**
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * @author fransfilastap
+ *
+ */
 @RestController
 @RequestMapping("/api/dashboard")
 public class DahsboardAPI {
 	
 	public @Autowired AvailabilityService availabilityService;
-	
 	public @Autowired NEDownService neDownService;
 	
+	
+	/**
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * @param holder
+	 * @return
+	 */
 	@RequestMapping(value="/nedowntrend",consumes="application/json",produces="application/json",method=RequestMethod.POST)
 	public Map<String,List<NEDownMovement>> neDownMovement(@RequestBody NEDownMovementRequestHolder holder){
 		
@@ -59,6 +81,17 @@ public class DahsboardAPI {
 		return map;
 	}
 	
+	
+	
+	/**
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * @param holder
+	 * @return
+	 */
 	@RequestMapping(value="/clusteravailbility",consumes="application/json",produces="application/json",method=RequestMethod.POST)
 	public Map<String,List<ClusterAvailability>> getClusterAvailabilityTrend(@RequestBody AvailabilityRequestHolder holder){
 		List<ClusterAvailability> availabilities = availabilityService.getAvailabilities(
@@ -80,6 +113,18 @@ public class DahsboardAPI {
 		return map;
 	}
 	
+	
+	
+	
+	/**
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * @param holder
+	 * @return
+	 */
 	@RequestMapping(value="/regionavailability",consumes="application/json",produces="application/json",method=RequestMethod.POST)
 	public Map<String, List<RegionAvailability>> getRegionAvailabilityTrend(@RequestBody AvailabilityRequestHolder holder){
 		List<RegionAvailability> availabilities = availabilityService
@@ -98,6 +143,19 @@ public class DahsboardAPI {
 	}
 	
 	
+	
+	
+	/**
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * @param holder
+	 * @return
+	 */
 	@RequestMapping(value="/dailyregionavailability",consumes="application/json",produces="application/json",method=RequestMethod.POST)
 	public Map<String, List<DailyRegionAvailability>> getDailyRegionAvailabilityTrend(@RequestBody AvailabilityRequestHolder holder){
 		
@@ -121,21 +179,64 @@ public class DahsboardAPI {
 		return map;
 	}
 	
+	
+	
+	/**
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * @return
+	 */
 	@RequestMapping(value="/nedownsummary",produces="application/json",method=RequestMethod.GET)
 	public List<NEDown> getNeDownSummary(){
 		return neDownService.getNEDownSummary();
 	}
 
+	
+	
+	
+	/**
+	 * 
+	 * 
+	 * 
+	 * 
+	 * @return
+	 */
 	@RequestMapping(value="/nedownstatushourly",produces="application/json",method=RequestMethod.GET)
 	public List<NEDownStatus> getNEDownStatusHourly(){
 		return neDownService.getNeDownStatusHourly();
 	}
 	
+	
+	
+	/**
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * @return
+	 */
 	@RequestMapping(value="/nedownstatusdaily",produces="application/json",method=RequestMethod.GET)
 	public List<NEDownStatus> getNEDownStatusDaily(){
 		return neDownService.getNeDownStatusDaily();
 	}
 	
+	
+	
+	
+	/**
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * @return
+	 */
 	@RequestMapping(value="/nedownaging",produces="application/json",method=RequestMethod.GET)
 	public List<NEDownAging> getCurrentNEDownAging(){
 		return neDownService.getCurrentNEDownAging();

@@ -61,6 +61,7 @@ public class GisController extends BaseController{
 		model.put("module", "customer_complaint");
 		model.put("fragment","gis");
 		model.put("resource","cc");
+		model.put("googlemap", "https://maps.googleapis.com/maps/api/js?key=AIzaSyB3x8rs3QQyUki-h1KUuSBpIBhP9pv7WMQ&libraries=places");
 		
 		return render(model);
 		

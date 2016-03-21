@@ -18,12 +18,32 @@ import id.franspratama.geol.core.dao.IUserRepository;
 import id.franspratama.geol.core.dao.IUserRoleRepository;
 import id.franspratama.geol.core.pojo.UserRole;
 
+
+
+/**
+ * 
+ * 
+ * 
+ * 
+ * @author fransfilastap
+ *
+ */
 @Service("jpaUserDetailService")
 public class UserDetailServiceImpl implements UserDetailsService{
 
 	private @Autowired IUserRepository userRepository;
 	private @Autowired IUserRoleRepository userRoleRepository;
 	
+	
+	
+	
+	/**
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 */
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		id.franspratama.geol.core.pojo.User user = userRepository.findUserByUsername(username);
@@ -35,6 +55,22 @@ public class UserDetailServiceImpl implements UserDetailsService{
 		return buildUserForAuthentication(user, authorities);
 	}
 	
+	
+	
+	
+	
+	
+	/**
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * @param userRoles
+	 * @return
+	 */
 	private List<GrantedAuthority> buildUserAuthority(List<UserRole> userRoles) {
 
 		Set<GrantedAuthority> setAuths = new HashSet<GrantedAuthority>();
@@ -49,6 +85,24 @@ public class UserDetailServiceImpl implements UserDetailsService{
 		return Result;
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * @param user
+	 * @param authorities
+	 * @return
+	 */
 	private User buildUserForAuthentication(id.franspratama.geol.core.pojo.User user, 
 			List<GrantedAuthority> authorities) {
 			return new User(user.getUsername(), user.getPassword(), 

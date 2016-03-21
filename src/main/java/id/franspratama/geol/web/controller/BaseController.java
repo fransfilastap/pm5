@@ -12,6 +12,17 @@ import org.springframework.web.servlet.ModelAndView;
 
 import id.franspratama.geol.core.dao.IUserRepository;
 
+/**
+ * <p>Ini adalah kelas abstract dengan template untuk parsing module view</p>
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * @author fransfilastap
+ *
+ */
 public abstract class BaseController {
 	
 	protected User me;
@@ -19,6 +30,14 @@ public abstract class BaseController {
 	protected @Autowired IUserRepository userRepository;
 	
 
+	/**
+	 * 
+	 * 
+	 * 
+	 * 
+	 * @param data
+	 * @return
+	 */
 	protected ModelAndView render( Map<String,Object> data  ){
 		ModelAndView modelAndView = new ModelAndView();
 	
@@ -27,6 +46,7 @@ public abstract class BaseController {
 		meApp = userRepository.findUserByUsername(me.getUsername());
 		
 		modelAndView.addObject("username", meApp.getFullname());
+		modelAndView.addObject("userid",meApp.getId());
 		modelAndView.setViewName("layout/main");
 		
 		if( data.get("toolbar") == null ){
@@ -41,7 +61,12 @@ public abstract class BaseController {
 		return modelAndView;
 	}
 	
-	
+	/**
+	 * 
+	 * 
+	 * 
+	 * @return
+	 */
 	protected String getUsername(){
 		return me.getUsername();
 	}

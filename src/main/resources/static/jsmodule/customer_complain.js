@@ -112,7 +112,7 @@ var Map = function( id , lat , lng  ){
 Map.prototype.init = function(latLng){
 	this.setLatLng( latLng );
 	this.map = new L.Map(this.$elem[0],{ zoomControl:false }).setView( latLng , 13);
-	var osmUrl='http://10.17.17.201/osm_tiles/{z}/{x}/{y}.png';
+	var osmUrl='http://10.9.216.20/osm_tiles/{z}/{x}/{y}.png';
 	var mapTiles = new L.TileLayer(osmUrl, {
         attribution: 'Map data &copy; '
         + '<a href="http://openstreetmap.org">OpenStreetMap</a> contributors, '
@@ -141,7 +141,7 @@ Map.prototype.init = function(latLng){
    	 	this.addOMS();
    	 	this.addAvailabilityListener();
    	 	this.addPathDrawer();
-   	 	//this.__initGoogleGeocoding(document.getElementById('location_search'));
+   	 	this.__initGoogleGeocoding(document.getElementById('location_search'));
 
    	var self = this;
  	//additional
@@ -980,7 +980,7 @@ Map.prototype.__search = function(keyword){
         })
 	}
 	else{
-		var geocodeUrl = "http://10.17.17.201/nominatim/search.php?format=json&q="+keyword;
+		var geocodeUrl = "http://10.9.216.20/nominatim/search.php?format=json&q="+keyword;
 
 		$.getJSON(geocodeUrl, function(data) {
 			$(".search_result ul").html("");
@@ -995,7 +995,7 @@ Map.prototype.__search = function(keyword){
 
 Map.prototype.__reverse = function( position ){
 	var me = this;
-	var reverseGeocode = "http://10.17.17.201/nominatim/reverse.php?format=json&lat="+position.lat+"&lon="+position.lng+"&zoom=18&addressdetails=1";
+	var reverseGeocode = "http://10.9.216.20/nominatim/reverse.php?format=json&lat="+position.lat+"&lon="+position.lng+"&zoom=18&addressdetails=1";
 	$.getJSON(reverseGeocode , function( data ){
 		me.centerMarker._popup.setContent( data.display_name );
 		me.centerMarker.openPopup();
@@ -1203,23 +1203,13 @@ Map.prototype.drawSpecial = function(data, table_id){
 	$(table_id).dataTable();
 }
 
-window.addEventListener('load',function(){
 
-	  var script = document.createElement('script');
-	  script.type = 'text/javascript';
-	  script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyA-99rHYu2y4Y5g_kxBF3ZsQYL99tjTkCg&libraries=places&callback=initGmap';
-	  document.body.appendChild(script);
-});
-
-function initGmap(){
-	pageLoad();
-}
 function pageLoad(){
 	var map = new Map( "#gmap", -6.2234585, 106.84260930000005 );
 	$("#content").append('<div class="loading"><img src="img/rolling.gif"/></div>');
 }
 jQuery(function($){
-	//pageLoad();
+	pageLoad();
     SingApp.onPageLoad(pageLoad);
 
 });

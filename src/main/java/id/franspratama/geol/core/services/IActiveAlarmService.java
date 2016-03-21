@@ -6,7 +6,7 @@ import id.franspratama.geol.web.api.ActiveAlarmDetailResponseWrapper;
 
 public interface IActiveAlarmService {
 
-	public static final int PAGE_SIZE = 500;
+	public static final int PAGE_SIZE = 1000;
 	
 	public ActiveAlarmDetailResponseWrapper getActiveAlarmList(Integer pageNumber,Sort sort,String[] fields);
 	

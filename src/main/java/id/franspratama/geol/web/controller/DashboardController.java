@@ -30,6 +30,16 @@ import id.franspratama.geol.view.DailyAvailabilityExcelView;
 import id.franspratama.geol.view.NEDownExcelView;
 import id.franspratama.geol.view.RegionAvailabilityExcelView;
 
+/**
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * @author fransfilastap
+ *
+ */
 @Controller
 public class DashboardController extends BaseController{
 	
@@ -47,6 +57,12 @@ public class DashboardController extends BaseController{
 	}
 
 	
+	/**
+	 * 
+	 * 
+	 * 
+	 * @return
+	 */
 	@RequestMapping(value={"/","/dashboard"},method=RequestMethod.GET)
 	@PreAuthorize("hasRole('DEV') OR hasRole('DASHBOARD_USER')")
 	public ModelAndView dashboard(){
@@ -59,6 +75,17 @@ public class DashboardController extends BaseController{
 		return render(data);
 	}
 
+	
+	
+	/**
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * @param span
+	 * @return
+	 */
 	@RequestMapping(value={"/export-dailynav"},method=RequestMethod.GET)
 	@PreAuthorize("hasRole('DEV') OR hasRole('DASHBOARD_USER')")
 	public ModelAndView exportDailyRegionAvailability(@RequestParam(value="span",required=true) String span){
@@ -71,6 +98,21 @@ public class DashboardController extends BaseController{
 		return new ModelAndView(new DailyAvailabilityExcelView(),data);
 	}
 	
+	
+	
+	
+	/**
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * @param region
+	 * @param span
+	 * @return
+	 */
 	@RequestMapping(value={"/export-clusternav"},method=RequestMethod.GET)
 	@PreAuthorize("hasRole('DEV') OR hasRole('DASHBOARD_USER')")
 	public ModelAndView exportClusterAvailability( @RequestParam(value="region",required=true) String region,
@@ -98,6 +140,20 @@ public class DashboardController extends BaseController{
 		return new ModelAndView( new ClusterAvailabilityExcelView(), model );
 	}
 	
+	
+	
+	/**
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * @param span
+	 * @return
+	 */
 	@RequestMapping(value={"/export-regionalnav"},method=RequestMethod.GET)	
 	@PreAuthorize("hasRole('DEV') OR hasRole('DASHBOARD_USER')")
 	public ModelAndView exportRegionAvailability(@RequestParam(value="span",required=true) String span ){
@@ -108,6 +164,19 @@ public class DashboardController extends BaseController{
 		return new ModelAndView(new RegionAvailabilityExcelView(),model);
 	}
 	
+	
+	
+	/**
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * @return
+	 */
 	@RequestMapping(value="/export-nedown",method=RequestMethod.GET,produces="application/json")
 	@PreAuthorize("hasRole('DEV') OR hasRole('DASHBOARD_USER')")
 	public ModelAndView exportCurrentNEDown(){
@@ -117,14 +186,5 @@ public class DashboardController extends BaseController{
 		model.put("data", data);
 		return new ModelAndView(new NEDownExcelView(), model);
 	}
-	
-	
-	
-	@InitBinder 
-	protected void initBinder(WebDataBinder binder) { 
-		binder.registerCustomEditor(TimeSpan.class, new TimespanEnumConverter());
-	}
-	
-	
 
 }

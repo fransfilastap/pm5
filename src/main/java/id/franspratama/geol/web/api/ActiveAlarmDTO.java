@@ -5,11 +5,13 @@ import java.util.Date;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import id.franspratama.geol.util.CustomDateTimeSerializer;
+import id.franspratama.geol.util.CustomStringDateTimeSerializer;
 
 public class ActiveAlarmDTO {
 	
     private String alarmName;
     private String node;
+    private String zone;
     private String siteId;
     private String site;
     private String ttno;
@@ -27,7 +29,7 @@ public class ActiveAlarmDTO {
 		super();
 	}
 	
-	public ActiveAlarmDTO(String alarmName, String node, String siteId, String site, String ttno, Date firstOccurrence,
+	public ActiveAlarmDTO(String alarmName, String node, String zone,String siteId, String site, String ttno, Date firstOccurrence,
 			Date lastOccurrence, Date lastReceived, Date firstReceived, String summary, String severity, String woId,
 			String pic, String woStatus) {
 		super();
@@ -45,6 +47,7 @@ public class ActiveAlarmDTO {
 		this.woId = woId;
 		this.pic = pic;
 		this.woStatus = woStatus;
+		this.zone = zone;
 	}
 
 
@@ -119,7 +122,7 @@ public class ActiveAlarmDTO {
 		return firstOccurrence;
 	}
 
-	@JsonSerialize(using=CustomDateTimeSerializer.class)
+	@JsonSerialize(using=CustomStringDateTimeSerializer.class)
 	public void setFirstOccurrence(Date firstOccurrence) {
 		this.firstOccurrence = firstOccurrence;
 	}
@@ -128,7 +131,7 @@ public class ActiveAlarmDTO {
 		return lastOccurrence;
 	}
 
-	@JsonSerialize(using=CustomDateTimeSerializer.class)
+	@JsonSerialize(using=CustomStringDateTimeSerializer.class)
 	public void setLastOccurrence(Date lastOccurrence) {
 		this.lastOccurrence = lastOccurrence;
 	}
@@ -137,7 +140,7 @@ public class ActiveAlarmDTO {
 		return lastReceived;
 	}
 
-	@JsonSerialize(using=CustomDateTimeSerializer.class)
+	@JsonSerialize(using=CustomStringDateTimeSerializer.class)
 	public void setLastReceived(Date lastReceived) {
 		this.lastReceived = lastReceived;
 	}
@@ -146,7 +149,7 @@ public class ActiveAlarmDTO {
 		return firstReceived;
 	}
 
-	@JsonSerialize(using=CustomDateTimeSerializer.class)
+	@JsonSerialize(using=CustomStringDateTimeSerializer.class)
 	public void setFirstReceived(Date firstReceived) {
 		this.firstReceived = firstReceived;
 	}
@@ -173,6 +176,14 @@ public class ActiveAlarmDTO {
 
 	public void setSeverity(String severity) {
 		this.severity = severity;
+	}
+
+	public String getZone() {
+		return zone;
+	}
+
+	public void setZone(String zone) {
+		this.zone = zone;
 	}
 
 	

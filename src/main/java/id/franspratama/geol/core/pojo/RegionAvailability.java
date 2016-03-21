@@ -11,7 +11,6 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import id.franspratama.geol.util.CustomDateTimeSerializer;
-import id.franspratama.geol.util.CustomOnlyDateSerializer;
 
 @Entity
 @Table(name="availabilities_region",catalog="geolv2")

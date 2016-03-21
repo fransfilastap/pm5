@@ -67,30 +67,42 @@ public class GisDTO {
 	public String getSiteName() {
 		return siteName;
 	}
+	
 	public void setSiteName(String siteName) {
 		this.siteName = siteName;
 	}
+	
 	public String getSiteId() {
 		return siteId;
 	}
+	
 	public void setSiteId(String siteId) {
 		this.siteId = siteId;
 	}
+	
 	public Severity getSeverity() {
 		return severity;
 	}
+	
 	public void setSeverity(Severity severity) {
 		this.severity = severity;
 	}
+	
+	
 	public double getLatitude() {
 		return latitude;
 	}
+	
 	public void setLatitude(double latitude) {
 		this.latitude = latitude;
 	}
+	
+	
 	public double getLongitude() {
 		return longitude;
 	}
+	
+	
 	public void setLongitude(double longitude) {
 		this.longitude = longitude;
 	}

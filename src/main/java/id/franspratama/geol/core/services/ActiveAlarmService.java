@@ -14,8 +14,10 @@ import org.springframework.stereotype.Service;
 
 import id.franspratama.geol.core.dao.IActiveAlarmRepository;
 import id.franspratama.geol.core.dao.IAlarmRemarkRepository;
+import id.franspratama.geol.core.dao.INeRepository;
 import id.franspratama.geol.core.pojo.ActiveAlarm;
 import id.franspratama.geol.core.pojo.AlarmRemark;
+import id.franspratama.geol.core.pojo.NE;
 import id.franspratama.geol.web.api.ActiveAlarmDetailDTO;
 import id.franspratama.geol.web.api.ActiveAlarmDetailResponseWrapper;
 
@@ -28,6 +30,13 @@ public class ActiveAlarmService implements IActiveAlarmService{
 	@Autowired
 	IAlarmRemarkRepository alarmRemarkRepository;
 	
+	@Autowired
+	INeRepository neDownRepository;
+	
+	@Autowired
+	IActiveAlarmDetailFulfillmentStrategy strategy;
+	
+	
 	@Override
 	public ActiveAlarmDetailResponseWrapper getActiveAlarmList(Integer pageNumber, Sort  sort, String[] fields) {
 		
@@ -35,30 +44,17 @@ public class ActiveAlarmService implements IActiveAlarmService{
 		Page<ActiveAlarm> page  				 	= activeAlarmRepository.findAll( pageRequest );		
 		List<ActiveAlarm> rows  				 	= page.getContent();
 		
-		List<String> siteIds 					 	= rows.stream().map(ActiveAlarm::getSiteId).collect(Collectors.toList());
+		List<NE> neList								= neDownRepository.getActiveAlarmNe();
 		List<AlarmRemark> remarks 				 	= alarmRemarkRepository.getActiveAlarmRemarks();
-		Map<String, List<AlarmRemark>> remarkMaps	= remarks.stream().collect(Collectors.groupingBy( AlarmRemark::getSiteId ));
+
 		
 		ActiveAlarmDetailResponseWrapper wrapper 	= new ActiveAlarmDetailResponseWrapper();
-		List<ActiveAlarmDetailDTO> dtos 		 	= new ArrayList<>();
+		List<ActiveAlarmDetailDTO> dtos 		 	= strategy.fill(rows, remarks, neList);
 		
-		rows.parallelStream().forEach( activealarm -> {
-			
-			ActiveAlarmDetailDTO dto 			 	= new ActiveAlarmDetailDTO();
-			
-			dto.setAlarmName( activealarm.getAlarmName() );
-			dto.setFirstOccurrence( activealarm.getFirstOccurrence() );
-			dto.setFirstReceived( activealarm.getFirstReceived()  );
-			dto.setLastOccurrence( activealarm.getFirstReceived() );
-			dto.setLastReceived( activealarm.getLastReceived() );
-			dto.setNode( activealarm.getNode() );
-			
-			
-			dtos.add(dto);
-		});
+		long total = activeAlarmRepository.count();
 		
 		wrapper.setRows( dtos );
-		wrapper.setTotal( 700000 );
+		wrapper.setTotal( (int) total );
 		
 		return wrapper;
 	}

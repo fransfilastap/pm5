@@ -38,20 +38,20 @@
                                 data-options="view:scrollview,fitColumns:true,rownumbers:true,singleSelect:true,pageSize:500">
                             <thead>
                                 <tr>
-                                    <th field="Severity" width="10" sortable="true" formatter="stylingSeverity">Severity</th>
-                                    <th field="spvarea" width="30" sortable="true">Supervisor</th>
-                                    <th field="mgrarea" width="30" sortable="true">Manager</th>
-                                    <th field="Node" width="10" sortable="true">Node</th>
-                                    <th field="Site" width="20" sortable="true">Site</th>
-                                    <th field="Summary" width="100" sortable="true">Summary</th>
-                                    <th field="Zone" width="10" sortable="true">Zone</th>
-                                    <th field="TTNo" width="10" sortable="true">TTNo</th>
-                                    <th field="LastOccurrence" width="20" sortable="true">Last Occurrence</th>
+                                    <th field="severity" width="10" sortable="true" formatter="stylingSeverity">Severity</th>
+                                    <th field="supervisorArea" width="30" sortable="true">Supervisor</th>
+                                    <th field="managerArea" width="30" sortable="true">Manager</th>
+                                    <th field="node" width="10" sortable="true">Node</th>
+                                    <th field="site" width="20" sortable="true">Site</th>
+                                    <th field="summary" width="100" sortable="true">Summary</th>
+                                    <th field="zone" width="10" sortable="true">Zone</th>
+                                    <th field="ttno" width="10" sortable="true">TTNo</th>
+                                    <th field="lastOccurrence" width="20" sortable="true">Last Occurrence</th>
                                     <th field="time" width="20" sortable="true">Last FTR</th>
-                                    <th field="remark_category" width="30" sortable="true">Remark Category</th>
+                                    <th field="remark" width="30" sortable="true">Remark Category</th>
                                     <th field="remark" width="20" sortable="true">Remark</th>
-                                    <th field="remark_time" width="20" sortable="true">Remark Time</th>
-                                    <th field="fullname" width="20" sortable="true">Remarked By</th>
+                                    <th field="time" width="20" sortable="true">Remark Time</th>
+                                    <th field="remarker" width="20" sortable="true">Remarked By</th>
                                 </tr>
                             </thead>
                         </table>
@@ -98,13 +98,15 @@
         <form id="fm" method="post" novalidate="novalidate">
             <div class="fitem">
                 <label>Remark By:</label>
-                <input name="remarker" class="easyui-textbox" required="" disabled="disabled" value=""></input>
-                <input name="user_id" type="hidden" value=""></input>
+                <input name="remarker" class="easyui-textbox" required="" disabled="disabled" th:value="${username}"></input>
+                <input name="user_id" type="hidden" th:value="${userid}"></input>
             </div>
             <div class="fitem">
                 <label>Category:</label>
                 <select id="remark_category" class="easyui-combobox" name="dept" style="width:200px;">
                     <option value="">Choose category</option>
+                    <div >
+                    </div>
                 </select>
             </div>
             <div class="fitem">

@@ -15,6 +15,8 @@ import id.franspratama.geol.core.pojo.AlarmRemark;
  */
 public interface IAlarmRemarkRepository extends JpaRepository<AlarmRemark, Integer>{
 	
+	
+	
 	/**
 	 * Get current active alarm remark
 	 * 
@@ -22,7 +24,6 @@ public interface IAlarmRemarkRepository extends JpaRepository<AlarmRemark, Integ
 	 * @param eventIds
 	 * @return
 	 */
-	
 	@Query(name="currentActiveAlarmRemarks",value="select remarkeds.* from ( "+
 		"    select * from( "+
 		"           select geolv2.alarm_remarks.* "+

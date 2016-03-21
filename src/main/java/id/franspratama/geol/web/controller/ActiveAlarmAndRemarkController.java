@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * 
+ * <p>Active Alarm Remark Controller</p>
  * 
  * 
  * 
@@ -20,11 +20,8 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class ActiveAlarmAndRemarkController extends BaseController{
 
-	/**
-	 * 
-	 * 
-	 * 
-	 */
+
+	
 	public ActiveAlarmAndRemarkController(){
 		super();
 	}

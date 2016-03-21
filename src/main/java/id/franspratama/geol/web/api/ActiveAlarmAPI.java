@@ -11,13 +11,39 @@ import org.springframework.web.bind.annotation.RestController;
 
 import id.franspratama.geol.core.services.ActiveAlarmService;
 
-
+/**
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * @author fransfilastap
+ *
+ */
 @RestController
 public class ActiveAlarmAPI {
 
 	@Autowired
 	ActiveAlarmService activeAlarmService;
 	
+	
+	
+	/**
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * 
+	 * @param order
+	 * @param page
+	 * @param rows
+	 * @param sort
+	 * @return
+	 */
 	@RequestMapping(value="/active-alarm-list",method=RequestMethod.POST)
 	public ActiveAlarmDetailResponseWrapper getActiveAlarmList( 	
 			@RequestParam(name="order",required=false) String order, 
